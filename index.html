@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DevPulse Nexus</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Inter, Arial, sans-serif;
+            background: #f5f7fa;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 30px 20px 50px;
+        }
+
+        header {
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+
+        .subtitle {
+            margin-top: 6px;
+            color: #6b7280;
+        }
+
+        .status {
+            margin-top: 12px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .card-title {
+            font-size: 13px;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .card-value {
+            margin-top: 8px;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .card-detail {
+            margin-top: 5px;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .section {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .section h2 {
+            margin-top: 0;
+            font-size: 20px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
+        }
+
+        th {
+            color: #6b7280;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .badge-ok {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-danger {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge-neutral {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .diagnosis {
+            padding: 18px;
+            border-radius: 10px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+        }
+
+        .diagnosis-status {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .diagnosis-reason {
+            color: #4b5563;
+            line-height: 1.6;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            resize: vertical;
+            padding: 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 15px;
+        }
+
+        button {
+            margin-top: 12px;
+            padding: 11px 20px;
+            border: none;
+            border-radius: 8px;
+            background: #111827;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #374151;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+
+        #answer {
+            margin-top: 18px;
+            padding: 18px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            min-height: 60px;
+        }
+
+        .error {
+            color: #991b1b;
+        }
+
+        @media (max-width: 900px) {
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>DevPulse Nexus</h1>
+
+        <div class="subtitle">
+            AI-Powered Developer Environment Observability and AIDevOps Intelligence
+        </div>
+
+        <div class="status">
+            Last telemetry update:
+            <strong id="timestamp">Loading...</strong>
+        </div>
+    </header>
+
+
+    <!-- SYSTEM TELEMETRY -->
+
+    <div class="cards">
+
+        <div class="card">
+            <div class="card-title">CPU</div>
+
+            <div class="card-value" id="cpu">
+                --
+            </div>
+
+            <div class="card-detail" id="cpu-detail">
+                --
+            </div>
+        </div>
+
+
+        <div class="card">
+            <div class="card-title">Memory</div>
+
+            <div class="card-value" id="memory">
+                --
+            </div>
+
+            <div class="card-detail" id="memory-detail">
+                --
+            </div>
+        </div>
+
+
+        <div class="card">
+            <div class="card-title">Disk</div>
+
+            <div class="card-value" id="disk">
+                --
+            </div>
+
+            <div class="card-detail" id="disk-detail">
+                --
+            </div>
+        </div>
+
+
+        <div class="card">
+            <div class="card-title">Docker</div>
+
+            <div class="card-value" id="docker">
+                --
+            </div>
+
+            <div class="card-detail" id="docker-detail">
+                --
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- CONTAINER TELEMETRY -->
+
+    <div class="section">
+
+        <h2>Container Telemetry</h2>
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>CPU</th>
+                        <th>Memory</th>
+                        <th>Memory %</th>
+                        <th>Network I/O</th>
+                        <th>Block I/O</th>
+                        <th>PIDs</th>
+                    </tr>
+                </thead>
+
+                <tbody id="containers">
+                    <tr>
+                        <td colspan="7">
+                            Loading...
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- DIAGNOSIS -->
+
+    <div class="section">
+
+        <h2>Docker Diagnosis</h2>
+
+        <div class="diagnosis">
+
+            <div
+                id="diagnosis-status"
+                class="diagnosis-status"
+            >
+                Waiting for telemetry...
+            </div>
+
+            <div
+                id="diagnosis-reason"
+                class="diagnosis-reason"
+            >
+                --
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- AI ASSISTANT -->
+
+    <div class="section">
+
+        <h2>Ask DevPulse</h2>
+
+        <textarea
+            id="question"
+            placeholder="Ask a developer or DevOps question..."
+        ></textarea>
+
+        <button
+            id="ask-button"
+            onclick="askQuestion()"
+        >
+            Ask DevPulse
+        </button>
+
+        <div id="answer">
+            Your AI response will appear here.
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+async function loadTelemetry() {
+
+    try {
+
+        const response = await fetch("/digital-twin");
+
+        if (!response.ok) {
+            throw new Error("Telemetry request failed");
+        }
+
+        const data = await response.json();
+
+        updateDashboard(data);
+
+    } catch (error) {
+
+        document.getElementById("timestamp").innerText =
+            "Telemetry unavailable";
+
+        console.error(error);
+    }
+}
+
+
+function updateDashboard(data) {
+
+    const system = data.system || {};
+    const cpu = system.cpu || {};
+    const memory = system.memory || {};
+    const disk = system.disk || {};
+    const docker = data.docker || {};
+
+
+    // Timestamp
+
+    document.getElementById("timestamp").innerText =
+        data.timestamp || "--";
+
+
+    // CPU
+
+    document.getElementById("cpu").innerText =
+        `${cpu.usage_percent ?? 0}%`;
+
+    document.getElementById("cpu-detail").innerText =
+        `${cpu.cores ?? 0} CPU cores`;
+
+
+    // Memory
+
+    document.getElementById("memory").innerText =
+        `${memory.usage_percent ?? 0}%`;
+
+    document.getElementById("memory-detail").innerText =
+        `${memory.used_gb ?? 0} GB used / ${memory.total_gb ?? 0} GB`;
+
+
+    // Disk
+
+    document.getElementById("disk").innerText =
+        `${disk.usage_percent ?? 0}%`;
+
+    document.getElementById("disk-detail").innerText =
+        `${disk.used_gb ?? 0} GB used / ${disk.total_gb ?? 0} GB`;
+
+
+    // Docker
+
+    if (!docker.available) {
+
+        document.getElementById("docker").innerText =
+            "OFFLINE";
+
+        document.getElementById("docker-detail").innerText =
+            docker.error || "Docker unavailable";
+
+    } else {
+
+        document.getElementById("docker").innerText =
+            "HEALTHY";
+
+        document.getElementById("docker-detail").innerText =
+            `${docker.container_count ?? 0} running container(s)`;
+
+    }
+
+
+    updateContainers(docker);
+
+}
+
+
+function updateContainers(docker) {
+
+    const table =
+        document.getElementById("containers");
+
+    table.innerHTML = "";
+
+
+    if (!docker.available) {
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="7" class="error">
+                    Docker telemetry unavailable.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    const containers =
+        docker.containers || [];
+
+
+    if (containers.length === 0) {
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="7">
+                    No running containers.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    for (const container of containers) {
+
+        const row =
+            document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${escapeHtml(container.name)}</td>
+            <td>${escapeHtml(container.cpu_percent)}</td>
+            <td>${escapeHtml(container.memory_usage)}</td>
+            <td>${escapeHtml(container.memory_percent)}</td>
+            <td>${escapeHtml(container.network_io)}</td>
+            <td>${escapeHtml(container.block_io)}</td>
+            <td>${escapeHtml(container.pids)}</td>
+        `;
+
+        table.appendChild(row);
+    }
+
+}
+
+
+function escapeHtml(value) {
+
+    if (value === null || value === undefined) {
+        return "--";
+    }
+
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+
+function setDiagnosis(diagnosis) {
+
+    const status =
+        document.getElementById("diagnosis-status");
+
+    const reason =
+        document.getElementById("diagnosis-reason");
+
+
+    if (!diagnosis) {
+
+        status.innerText =
+            "No diagnosis available";
+
+        status.className =
+            "diagnosis-status badge-neutral";
+
+        reason.innerText =
+            "No deterministic diagnosis was returned.";
+
+        return;
+    }
+
+
+    const assessment =
+        diagnosis.assessment || "unknown";
+
+
+    if (assessment === "not_responsible") {
+
+        status.innerText =
+            "NOT RESPONSIBLE";
+
+        status.className =
+            "diagnosis-status badge-ok";
+
+    } else if (assessment === "unlikely") {
+
+        status.innerText =
+            "UNLIKELY";
+
+        status.className =
+            "diagnosis-status badge-ok";
+
+    } else if (assessment === "potential_cause") {
+
+        status.innerText =
+            "POTENTIAL CAUSE";
+
+        status.className =
+            "diagnosis-status badge-danger";
+
+    } else {
+
+        status.innerText =
+            "INCONCLUSIVE";
+
+        status.className =
+            "diagnosis-status badge-warning";
+    }
+
+
+    reason.innerText =
+        diagnosis.reason || "No diagnostic explanation available.";
+
+}
+
+
+async function askQuestion() {
+
+    const question =
+        document.getElementById("question")
+            .value
+            .trim();
+
+    const answer =
+        document.getElementById("answer");
+
+    const button =
+        document.getElementById("ask-button");
+
+
+    if (!question) {
+
+        answer.innerText =
+            "Please enter a question.";
+
+        return;
+    }
+
+
+    button.disabled = true;
+
+    answer.innerText =
+        "DevPulse is analyzing the current environment...";
+
+
+    try {
+
+        const response = await fetch(
+            "/ask?question=" +
+            encodeURIComponent(question)
+        );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.detail ||
+                "Request failed"
+            );
+        }
+
+
+        answer.innerText =
+            data.answer ||
+            "No AI response was returned.";
+
+
+        // Update diagnosis from the
+        // same /ask response when available.
+
+        if (data.diagnosis) {
+            setDiagnosis(data.diagnosis);
+        }
+
+
+    } catch (error) {
+
+        answer.innerText =
+            "DevPulse could not complete the AI request.\n\n" +
+            error.message;
+
+    } finally {
+
+        button.disabled = false;
+    }
+
+}
+
+
+// Initial telemetry load
+
+loadTelemetry();
+
+
+// Refresh Digital Twin every 5 seconds
+
+setInterval(
+    loadTelemetry,
+    5000
+);
+
+</script>
+
+</body>
+</html>
