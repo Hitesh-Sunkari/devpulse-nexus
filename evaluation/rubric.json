@@ -1,0 +1,813 @@
+[
+  {
+    "id": 1,
+    "category": "Explanation",
+    "question": "What does the get_digital_twin() function do?",
+    "expected_concepts": [
+      "get_digital_twin",
+      "collects host/system telemetry",
+      "CPU",
+      "memory",
+      "Docker/container information",
+      "returns a digital-twin representation"
+    ],
+    "required_concepts": [
+      "get_digital_twin",
+      "telemetry"
+    ],
+    "hallucination_checks": [
+      "invented device identifier",
+      "MAC address",
+      "external digital twin service"
+    ],
+    "category_metrics": {
+      "correctness_weight": 0.6,
+      "relevance_weight": 0.25,
+      "hallucination_weight": 0.15
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    }
+  },
+  {
+    "id": 2,
+    "category": "Explanation",
+    "question": "Explain how DevPulse collects host memory and CPU information.",
+    "expected_concepts": [
+      "host CPU information",
+      "host memory information",
+      "psutil",
+      "CPU percentage",
+      "memory percentage"
+    ],
+    "required_concepts": [
+      "CPU",
+      "memory"
+    ],
+    "hallucination_checks": [],
+    "category_metrics": {
+      "correctness_weight": 0.6,
+      "relevance_weight": 0.25,
+      "hallucination_weight": 0.15
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    }
+  },
+  {
+    "id": 3,
+    "category": "Explanation",
+    "question": "Explain the purpose of the deterministic diagnosis.",
+    "expected_concepts": [
+      "deterministic diagnosis",
+      "rule-based diagnosis",
+      "uses telemetry/state",
+      "consistent diagnosis",
+      "does not depend on LLM"
+    ],
+    "required_concepts": [
+      "deterministic",
+      "diagnosis"
+    ],
+    "hallucination_checks": [],
+    "category_metrics": {
+      "correctness_weight": 0.6,
+      "relevance_weight": 0.25,
+      "hallucination_weight": 0.15
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    }
+  },
+  {
+    "id": 4,
+    "category": "Explanation",
+    "question": "Explain the role of the DevPulse orchestrator.",
+    "expected_concepts": [
+      "orchestrator",
+      "coordinates",
+      "RAG retrieval",
+      "diagnosis",
+      "Ollama",
+      "final response"
+    ],
+    "required_concepts": [
+      "orchestrator"
+    ],
+    "hallucination_checks": [],
+    "category_metrics": {
+      "correctness_weight": 0.6,
+      "relevance_weight": 0.25,
+      "hallucination_weight": 0.15
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    }
+  },
+  {
+    "id": 5,
+    "category": "Code Retrieval",
+    "question": "Which file retrieves knowledge from ChromaDB?",
+    "expected_concepts": [
+      "rag.py",
+      "ChromaDB",
+      "retrieval"
+    ],
+    "required_concepts": [
+      "rag.py"
+    ],
+    "hallucination_checks": [],
+    "category_metrics": {
+      "correctness_weight": 0.65,
+      "relevance_weight": 0.2,
+      "hallucination_weight": 0.15
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    }
+  },
+  {
+    "id": 6,
+    "category": "Code Retrieval",
+    "question": "Which file collects Docker container statistics?",
+    "expected_concepts": [
+      "docker_monitor.py",
+      "Docker",
+      "container statistics"
+    ],
+    "required_concepts": [
+      "docker_monitor.py"
+    ],
+    "hallucination_checks": [],
+    "category_metrics": {
+      "correctness_weight": 0.65,
+      "relevance_weight": 0.2,
+      "hallucination_weight": 0.15
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    }
+  },
+  {
+    "id": 7,
+    "category": "Code Retrieval",
+    "question": "Where is the Ollama model configured?",
+    "expected_concepts": [
+      "orchestrator.py",
+      "Ollama",
+      "model configuration"
+    ],
+    "required_concepts": [
+      "Ollama"
+    ],
+    "hallucination_checks": [],
+    "category_metrics": {
+      "correctness_weight": 0.65,
+      "relevance_weight": 0.2,
+      "hallucination_weight": 0.15
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    }
+  },
+  {
+    "id": 8,
+    "category": "Code Retrieval",
+    "question": "Which file stores telemetry history?",
+    "expected_concepts": [
+      "telemetry_history.py",
+      "telemetry history"
+    ],
+    "required_concepts": [
+      "telemetry_history.py"
+    ],
+    "hallucination_checks": [],
+    "category_metrics": {
+      "correctness_weight": 0.65,
+      "relevance_weight": 0.2,
+      "hallucination_weight": 0.15
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    }
+  },
+  {
+    "id": 9,
+    "category": "Dependency Understanding",
+    "question": "How does /ask connect FastAPI, RAG, diagnosis, and Ollama?",
+    "expected_concepts": [
+      "FastAPI",
+      "/ask",
+      "orchestrator",
+      "RAG",
+      "diagnosis",
+      "Ollama"
+    ],
+    "required_concepts": [
+      "/ask",
+      "RAG",
+      "Ollama"
+    ],
+    "hallucination_checks": [],
+    "category_metrics": {
+      "correctness_weight": 0.55,
+      "relevance_weight": 0.25,
+      "hallucination_weight": 0.2
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    }
+  },
+  {
+    "id": 10,
+    "category": "Dependency Understanding",
+    "question": "What components are involved between a user question and the final answer?",
+    "expected_concepts": [
+      "user question",
+      "FastAPI",
+      "orchestrator",
+      "telemetry",
+      "diagnosis",
+      "retrieval",
+      "Ollama",
+      "final answer"
+    ],
+    "required_concepts": [
+      "question",
+      "Ollama"
+    ],
+    "hallucination_checks": [],
+    "category_metrics": {
+      "correctness_weight": 0.55,
+      "relevance_weight": 0.25,
+      "hallucination_weight": 0.2
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    }
+  },
+  {
+    "id": 11,
+    "category": "Dependency Understanding",
+    "question": "Which module does orchestrate_request() depend on for knowledge retrieval?",
+    "expected_concepts": [
+      "orchestrate_request",
+      "RAG",
+      "knowledge retrieval",
+      "rag"
+    ],
+    "required_concepts": [
+      "orchestrate_request",
+      "rag"
+    ],
+    "hallucination_checks": [],
+    "category_metrics": {
+      "correctness_weight": 0.55,
+      "relevance_weight": 0.25,
+      "hallucination_weight": 0.2
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    }
+  },
+  {
+    "id": 12,
+    "category": "Dependency Understanding",
+    "question": "What happens to retrieved documents before they reach Ollama?",
+    "expected_concepts": [
+      "retrieved documents",
+      "context",
+      "prompt",
+      "passed to Ollama"
+    ],
+    "required_concepts": [
+      "retrieved"
+    ],
+    "hallucination_checks": [],
+    "category_metrics": {
+      "correctness_weight": 0.55,
+      "relevance_weight": 0.25,
+      "hallucination_weight": 0.2
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    }
+  },
+  {
+    "id": 13,
+    "category": "Bug Analysis",
+    "question": "What happens if Docker is not installed or unavailable?",
+    "expected_concepts": [
+      "Docker unavailable",
+      "error handling",
+      "empty/no container data",
+      "host telemetry can still be used",
+      "Docker should not automatically be blamed"
+    ],
+    "required_concepts": [
+      "Docker"
+    ],
+    "hallucination_checks": [],
+    "category_metrics": {
+      "correctness_weight": 0.5,
+      "relevance_weight": 0.25,
+      "hallucination_weight": 0.25
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    }
+  },
+  {
+    "id": 14,
+    "category": "Bug Analysis",
+    "question": "What happens if Ollama times out?",
+    "expected_concepts": [
+      "timeout",
+      "Ollama",
+      "exception/error handling",
+      "request fails gracefully"
+    ],
+    "required_concepts": [
+      "timeout",
+      "Ollama"
+    ],
+    "hallucination_checks": [],
+    "category_metrics": {
+      "correctness_weight": 0.5,
+      "relevance_weight": 0.25,
+      "hallucination_weight": 0.25
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    }
+  },
+  {
+    "id": 15,
+    "category": "Bug Analysis",
+    "question": "What could cause RAG retrieval to return no documents?",
+    "expected_concepts": [
+      "ChromaDB",
+      "embedding",
+      "query",
+      "collection",
+      "no matching documents",
+      "retrieval configuration"
+    ],
+    "required_concepts": [
+      "retrieval"
+    ],
+    "hallucination_checks": [],
+    "category_metrics": {
+      "correctness_weight": 0.5,
+      "relevance_weight": 0.25,
+      "hallucination_weight": 0.25
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    }
+  },
+  {
+    "id": 16,
+    "category": "Bug Analysis",
+    "question": "How does the code prevent Docker from being incorrectly blamed for high host memory usage?",
+    "expected_concepts": [
+      "host memory",
+      "container memory",
+      "running containers",
+      "deterministic diagnosis",
+      "container usage must support responsibility"
+    ],
+    "required_concepts": [
+      "host memory",
+      "container"
+    ],
+    "hallucination_checks": [],
+    "category_metrics": {
+      "correctness_weight": 0.5,
+      "relevance_weight": 0.25,
+      "hallucination_weight": 0.25
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    }
+  },
+  {
+    "id": 17,
+    "category": "Code Generation",
+    "question": "Write Python code to calculate the average container memory percentage.",
+    "expected_concepts": [
+      "iterate over containers",
+      "memory percentage",
+      "average",
+      "handle empty list / zero containers"
+    ],
+    "required_concepts": [
+      "average",
+      "memory"
+    ],
+    "hallucination_checks": [],
+    "category_metrics": {
+      "correctness_weight": 0.45,
+      "relevance_weight": 0.15,
+      "hallucination_weight": 0.1,
+      "test_pass_weight": 0.3
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    },
+    "test_pass_required": true
+  },
+  {
+    "id": 18,
+    "category": "Code Generation",
+    "question": "Write a function to identify containers using more than 50% memory.",
+    "expected_concepts": [
+      "iterate containers",
+      "memory percentage",
+      "> 50",
+      "filter/identify containers"
+    ],
+    "required_concepts": [
+      "> 50",
+      "memory"
+    ],
+    "hallucination_checks": [],
+    "category_metrics": {
+      "correctness_weight": 0.45,
+      "relevance_weight": 0.15,
+      "hallucination_weight": 0.1,
+      "test_pass_weight": 0.3
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    },
+    "test_pass_required": true
+  },
+  {
+    "id": 19,
+    "category": "Code Generation",
+    "question": "Write a test for parse_memory_percentage().",
+    "expected_concepts": [
+      "parse_memory_percentage",
+      "test function",
+      "valid memory input",
+      "expected percentage",
+      "pytest/assert"
+    ],
+    "required_concepts": [
+      "parse_memory_percentage",
+      "assert"
+    ],
+    "hallucination_checks": [],
+    "category_metrics": {
+      "correctness_weight": 0.45,
+      "relevance_weight": 0.15,
+      "hallucination_weight": 0.1,
+      "test_pass_weight": 0.3
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    },
+    "test_pass_required": true
+  },
+  {
+    "id": 20,
+    "category": "Code Generation",
+    "question": "Write a test verifying that zero running containers produces not_responsible.",
+    "expected_concepts": [
+      "zero running containers",
+      "not_responsible",
+      "test",
+      "assert"
+    ],
+    "required_concepts": [
+      "not_responsible",
+      "assert"
+    ],
+    "hallucination_checks": [],
+    "category_metrics": {
+      "correctness_weight": 0.45,
+      "relevance_weight": 0.15,
+      "hallucination_weight": 0.1,
+      "test_pass_weight": 0.3
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    },
+    "test_pass_required": true
+  },
+  {
+    "id": 21,
+    "category": "Code Generation",
+    "question": "Write a FastAPI endpoint that returns the latest telemetry history record.",
+    "expected_concepts": [
+      "FastAPI",
+      "GET endpoint",
+      "latest telemetry history",
+      "telemetry history",
+      "return latest record"
+    ],
+    "required_concepts": [
+      "FastAPI",
+      "GET",
+      "latest"
+    ],
+    "hallucination_checks": [],
+    "category_metrics": {
+      "correctness_weight": 0.45,
+      "relevance_weight": 0.15,
+      "hallucination_weight": 0.1,
+      "test_pass_weight": 0.3
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    },
+    "test_pass_required": true
+  },
+  {
+    "id": 22,
+    "category": "Refactoring",
+    "question": "How could build_diagnosis() be refactored to make it easier to test?",
+    "expected_concepts": [
+      "build_diagnosis",
+      "separate pure logic",
+      "dependency injection",
+      "small testable functions",
+      "mock inputs"
+    ],
+    "required_concepts": [
+      "build_diagnosis",
+      "test"
+    ],
+    "hallucination_checks": [],
+    "category_metrics": {
+      "correctness_weight": 0.55,
+      "relevance_weight": 0.25,
+      "hallucination_weight": 0.2
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    }
+  },
+  {
+    "id": 23,
+    "category": "Refactoring",
+    "question": "How could the Ollama configuration be moved from hardcoded values to environment variables?",
+    "expected_concepts": [
+      "environment variables",
+      "os.getenv",
+      "Ollama URL",
+      "model name",
+      "configuration"
+    ],
+    "required_concepts": [
+      "environment",
+      "Ollama"
+    ],
+    "hallucination_checks": [],
+    "category_metrics": {
+      "correctness_weight": 0.55,
+      "relevance_weight": 0.25,
+      "hallucination_weight": 0.2
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    }
+  },
+  {
+    "id": 24,
+    "category": "Refactoring",
+    "question": "How could duplicate Digital Twin logic between main.py and digital_twin.py be reduced?",
+    "expected_concepts": [
+      "duplicate Digital Twin logic",
+      "single shared function/module",
+      "reuse",
+      "remove duplication"
+    ],
+    "required_concepts": [
+      "duplicate",
+      "reuse"
+    ],
+    "hallucination_checks": [],
+    "category_metrics": {
+      "correctness_weight": 0.55,
+      "relevance_weight": 0.25,
+      "hallucination_weight": 0.2
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    }
+  },
+  {
+    "id": 25,
+    "category": "Refactoring",
+    "question": "Suggest an improvement to the error handling in orchestrator.py.",
+    "expected_concepts": [
+      "orchestrator.py",
+      "specific exception handling",
+      "timeouts",
+      "logging",
+      "graceful fallback"
+    ],
+    "required_concepts": [
+      "exception",
+      "orchestrator"
+    ],
+    "hallucination_checks": [],
+    "category_metrics": {
+      "correctness_weight": 0.55,
+      "relevance_weight": 0.25,
+      "hallucination_weight": 0.2
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    }
+  },
+  {
+    "id": 26,
+    "category": "RAG-based Question",
+    "question": "According to the Docker knowledge base, what command shows live container resource usage?",
+    "expected_concepts": [
+      "docker stats",
+      "live container resource usage"
+    ],
+    "required_concepts": [
+      "docker stats"
+    ],
+    "hallucination_checks": [],
+    "category_metrics": {
+      "correctness_weight": 0.4,
+      "relevance_weight": 0.2,
+      "hallucination_weight": 0.2,
+      "retrieval_quality_weight": 0.2
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    },
+    "retrieval_required": true
+  },
+  {
+    "id": 27,
+    "category": "RAG-based Question",
+    "question": "According to the knowledge base, how should high Docker memory usage be investigated?",
+    "expected_concepts": [
+      "docker stats",
+      "identify high-memory containers",
+      "compare container memory with host memory",
+      "inspect processes/logs/configuration",
+      "do not automatically blame Docker"
+    ],
+    "required_concepts": [
+      "docker stats"
+    ],
+    "hallucination_checks": [],
+    "category_metrics": {
+      "correctness_weight": 0.4,
+      "relevance_weight": 0.2,
+      "hallucination_weight": 0.2,
+      "retrieval_quality_weight": 0.2
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    },
+    "retrieval_required": true
+  },
+  {
+    "id": 28,
+    "category": "RAG-based Question",
+    "question": "What Docker option can be used to configure a container memory limit?",
+    "expected_concepts": [
+      "--memory",
+      "memory limit",
+      "docker run"
+    ],
+    "required_concepts": [
+      "--memory"
+    ],
+    "hallucination_checks": [],
+    "category_metrics": {
+      "correctness_weight": 0.4,
+      "relevance_weight": 0.2,
+      "hallucination_weight": 0.2,
+      "retrieval_quality_weight": 0.2
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    },
+    "retrieval_required": true
+  },
+  {
+    "id": 29,
+    "category": "RAG-based Question",
+    "question": "What does the knowledge base recommend checking when a container unexpectedly uses high memory?",
+    "expected_concepts": [
+      "container memory usage",
+      "docker stats",
+      "processes",
+      "logs",
+      "memory limits",
+      "host memory"
+    ],
+    "required_concepts": [
+      "container",
+      "memory"
+    ],
+    "hallucination_checks": [],
+    "category_metrics": {
+      "correctness_weight": 0.4,
+      "relevance_weight": 0.2,
+      "hallucination_weight": 0.2,
+      "retrieval_quality_weight": 0.2
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    },
+    "retrieval_required": true
+  },
+  {
+    "id": 30,
+    "category": "RAG-based Question",
+    "question": "Does the retrieved knowledge say that Docker is always responsible for high host memory usage? Explain.",
+    "expected_concepts": [
+      "Docker is not always responsible",
+      "host memory can have other causes",
+      "container usage must be examined",
+      "evidence-based diagnosis"
+    ],
+    "required_concepts": [
+      "not always",
+      "host memory"
+    ],
+    "hallucination_checks": [],
+    "category_metrics": {
+      "correctness_weight": 0.4,
+      "relevance_weight": 0.2,
+      "hallucination_weight": 0.2,
+      "retrieval_quality_weight": 0.2
+    },
+    "scoring": {
+      "correct": 1.0,
+      "partial": 0.5,
+      "incorrect": 0.0
+    },
+    "retrieval_required": true
+  }
+]

@@ -6,3 +6,29 @@ telemetry_history.json
 .env
 *.log
 .DS_Store
+.env
+
+# Local environment / secrets
+.env
+.venv/
+venv/
+
+# Runtime/generated data
+chroma_db/
+telemetry_history.json
+
+# Python cache
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+
+# Local backups
+*.bak
+*.backup
+*_backup_*
+*.before_*
+*.week5_backup*
+
+# Temporary archives
+*.zip

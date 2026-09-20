@@ -1,0 +1,226 @@
+{
+  "evaluation_count": 90,
+  "method": {
+    "type": "no_model_rule_based_reference_scoring",
+    "accuracy_definition": "percentage of answers reaching >=75% required concept coverage",
+    "partial_definition": "answers reaching 50-74% required concept coverage",
+    "hallucination_definition": "answers with <50% required reference concept coverage; this is a screening signal, not proof of factual hallucination",
+    "execution_success": "request completed without execution error"
+  },
+  "models": {
+    "qwen2.5:1.5b": {
+      "tests": 30,
+      "execution": {
+        "successful": 30,
+        "errors": 0,
+        "success_percent": 100.0
+      },
+      "quality": {
+        "accuracy_percent": 73.33,
+        "test_pass_percent": 73.33,
+        "partial_percent": 23.33,
+        "failure_percent": 3.33,
+        "hallucination_screen_percent": 3.33,
+        "average_concept_coverage_percent": 85.56
+      },
+      "performance": {
+        "average_latency_seconds": 68.17,
+        "median_latency_seconds": 12.26,
+        "average_output_tokens": 99.9,
+        "total_output_tokens": 2997,
+        "average_tokens_per_second": 7.77,
+        "median_tokens_per_second": 7.43
+      }
+    },
+    "phi3:mini": {
+      "tests": 30,
+      "execution": {
+        "successful": 30,
+        "errors": 0,
+        "success_percent": 100.0
+      },
+      "quality": {
+        "accuracy_percent": 63.33,
+        "test_pass_percent": 63.33,
+        "partial_percent": 33.33,
+        "failure_percent": 3.33,
+        "hallucination_screen_percent": 3.33,
+        "average_concept_coverage_percent": 80.56
+      },
+      "performance": {
+        "average_latency_seconds": 27.08,
+        "median_latency_seconds": 13.65,
+        "average_output_tokens": 62.93,
+        "total_output_tokens": 1888,
+        "average_tokens_per_second": 4.74,
+        "median_tokens_per_second": 5.45
+      }
+    },
+    "tinyllama": {
+      "tests": 30,
+      "execution": {
+        "successful": 30,
+        "errors": 0,
+        "success_percent": 100.0
+      },
+      "quality": {
+        "accuracy_percent": 63.33,
+        "test_pass_percent": 63.33,
+        "partial_percent": 26.67,
+        "failure_percent": 10.0,
+        "hallucination_screen_percent": 10.0,
+        "average_concept_coverage_percent": 76.39
+      },
+      "performance": {
+        "average_latency_seconds": 14.47,
+        "median_latency_seconds": 3.28,
+        "average_output_tokens": 74.73,
+        "total_output_tokens": 2242,
+        "average_tokens_per_second": 16.74,
+        "median_tokens_per_second": 20.06
+      }
+    }
+  },
+  "categories": {
+    "Explanation": {
+      "qwen2.5:1.5b": {
+        "tests": 4,
+        "pass_percent": 50.0,
+        "partial_percent": 50.0,
+        "average_coverage_percent": 79.17
+      },
+      "phi3:mini": {
+        "tests": 4,
+        "pass_percent": 50.0,
+        "partial_percent": 50.0,
+        "average_coverage_percent": 79.17
+      },
+      "tinyllama": {
+        "tests": 4,
+        "pass_percent": 50.0,
+        "partial_percent": 50.0,
+        "average_coverage_percent": 79.17
+      }
+    },
+    "Code Retrieval": {
+      "qwen2.5:1.5b": {
+        "tests": 4,
+        "pass_percent": 50.0,
+        "partial_percent": 50.0,
+        "average_coverage_percent": 75.0
+      },
+      "phi3:mini": {
+        "tests": 4,
+        "pass_percent": 50.0,
+        "partial_percent": 50.0,
+        "average_coverage_percent": 75.0
+      },
+      "tinyllama": {
+        "tests": 4,
+        "pass_percent": 50.0,
+        "partial_percent": 25.0,
+        "average_coverage_percent": 62.5
+      }
+    },
+    "Dependency Understanding": {
+      "qwen2.5:1.5b": {
+        "tests": 4,
+        "pass_percent": 50.0,
+        "partial_percent": 25.0,
+        "average_coverage_percent": 62.5
+      },
+      "phi3:mini": {
+        "tests": 4,
+        "pass_percent": 50.0,
+        "partial_percent": 25.0,
+        "average_coverage_percent": 62.5
+      },
+      "tinyllama": {
+        "tests": 4,
+        "pass_percent": 50.0,
+        "partial_percent": 25.0,
+        "average_coverage_percent": 62.5
+      }
+    },
+    "Bug Analysis": {
+      "qwen2.5:1.5b": {
+        "tests": 4,
+        "pass_percent": 100.0,
+        "partial_percent": 0.0,
+        "average_coverage_percent": 100.0
+      },
+      "phi3:mini": {
+        "tests": 4,
+        "pass_percent": 75.0,
+        "partial_percent": 25.0,
+        "average_coverage_percent": 87.5
+      },
+      "tinyllama": {
+        "tests": 4,
+        "pass_percent": 75.0,
+        "partial_percent": 25.0,
+        "average_coverage_percent": 87.5
+      }
+    },
+    "Code Generation": {
+      "qwen2.5:1.5b": {
+        "tests": 5,
+        "pass_percent": 80.0,
+        "partial_percent": 20.0,
+        "average_coverage_percent": 90.0
+      },
+      "phi3:mini": {
+        "tests": 5,
+        "pass_percent": 20.0,
+        "partial_percent": 80.0,
+        "average_coverage_percent": 60.0
+      },
+      "tinyllama": {
+        "tests": 5,
+        "pass_percent": 80.0,
+        "partial_percent": 20.0,
+        "average_coverage_percent": 90.0
+      }
+    },
+    "Refactoring": {
+      "qwen2.5:1.5b": {
+        "tests": 4,
+        "pass_percent": 75.0,
+        "partial_percent": 25.0,
+        "average_coverage_percent": 87.5
+      },
+      "phi3:mini": {
+        "tests": 4,
+        "pass_percent": 100.0,
+        "partial_percent": 0.0,
+        "average_coverage_percent": 100.0
+      },
+      "tinyllama": {
+        "tests": 4,
+        "pass_percent": 75.0,
+        "partial_percent": 25.0,
+        "average_coverage_percent": 87.5
+      }
+    },
+    "RAG-based Question": {
+      "qwen2.5:1.5b": {
+        "tests": 5,
+        "pass_percent": 100.0,
+        "partial_percent": 0.0,
+        "average_coverage_percent": 100.0
+      },
+      "phi3:mini": {
+        "tests": 5,
+        "pass_percent": 100.0,
+        "partial_percent": 0.0,
+        "average_coverage_percent": 100.0
+      },
+      "tinyllama": {
+        "tests": 5,
+        "pass_percent": 60.0,
+        "partial_percent": 20.0,
+        "average_coverage_percent": 65.0
+      }
+    }
+  }
+}

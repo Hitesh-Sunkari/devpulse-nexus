@@ -1,9 +1,12 @@
+
+================================================================================
+FILE: main.py
+================================================================================
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
 import json
-import os
 import platform
 import time
 from datetime import datetime
@@ -40,20 +43,8 @@ templates = Jinja2Templates(directory="templates")
 # CONFIGURATION
 # ============================================================
 
-# IMPORTANT:
-# Inside Docker, Ollama is reached through the Compose service
-# name "ollama", not 127.0.0.1.
-OLLAMA_BASE_URL = os.getenv(
-    "OLLAMA_URL",
-    "http://ollama:11434",
-).rstrip("/")
-
-OLLAMA_URL = f"{OLLAMA_BASE_URL}/api/generate"
-
-OLLAMA_MODEL = os.getenv(
-    "OLLAMA_MODEL",
-    "qwen2.5:1.5b",
-)
+OLLAMA_URL = "http://127.0.0.1:11434/api/generate"
+OLLAMA_MODEL = "qwen2.5:1.5b"
 
 # Keep generation moderate because the model is running locally.
 OLLAMA_NUM_PREDICT = 160
@@ -76,6 +67,7 @@ SIGNIFICANT_CONTAINER_MEMORY_PERCENT = 20.0
 
 def now_iso():
     """Return the current local timestamp."""
+
     return datetime.now().isoformat()
 
 
@@ -221,12 +213,23 @@ def build_diagnosis(digital_twin):
 
         return {
             "docker_status": "unavailable",
+
             "running_containers": None,
+
             "docker_container_memory": "unknown",
-            "host_memory_usage_percent": host_memory_usage,
-            "docker_is_evidently_responsible": "unknown",
-            "assessment": "unknown",
-            "significant_containers": [],
+
+            "host_memory_usage_percent":
+                host_memory_usage,
+
+            "docker_is_evidently_responsible":
+                "unknown",
+
+            "assessment":
+                "unknown",
+
+            "significant_containers":
+                [],
+
             "reason": (
                 "Docker telemetry is unavailable. "
                 "Docker container memory usage cannot "
@@ -256,12 +259,23 @@ def build_diagnosis(digital_twin):
 
         return {
             "docker_status": "available",
+
             "running_containers": 0,
+
             "docker_container_memory": "none",
-            "host_memory_usage_percent": host_memory_usage,
-            "docker_is_evidently_responsible": False,
-            "assessment": "not_responsible",
-            "significant_containers": [],
+
+            "host_memory_usage_percent":
+                host_memory_usage,
+
+            "docker_is_evidently_responsible":
+                False,
+
+            "assessment":
+                "not_responsible",
+
+            "significant_containers":
+                [],
+
             "reason": (
                 "No Docker containers are currently "
                 "running, so the current host memory "
@@ -332,12 +346,25 @@ def build_diagnosis(digital_twin):
 
         return {
             "docker_status": "available",
-            "running_containers": container_count,
-            "docker_container_memory": container_memory,
-            "host_memory_usage_percent": host_memory_usage,
-            "docker_is_evidently_responsible": "potentially",
-            "assessment": "potentially_significant",
-            "significant_containers": significant_containers,
+
+            "running_containers":
+                container_count,
+
+            "docker_container_memory":
+                container_memory,
+
+            "host_memory_usage_percent":
+                host_memory_usage,
+
+            "docker_is_evidently_responsible":
+                "potentially",
+
+            "assessment":
+                "potentially_significant",
+
+            "significant_containers":
+                significant_containers,
+
             "reason": (
                 "One or more Docker containers show "
                 "comparatively high memory utilization "
@@ -355,12 +382,25 @@ def build_diagnosis(digital_twin):
 
     return {
         "docker_status": "available",
-        "running_containers": container_count,
-        "docker_container_memory": container_memory,
-        "host_memory_usage_percent": host_memory_usage,
-        "docker_is_evidently_responsible": False,
-        "assessment": "unlikely",
-        "significant_containers": [],
+
+        "running_containers":
+            container_count,
+
+        "docker_container_memory":
+            container_memory,
+
+        "host_memory_usage_percent":
+            host_memory_usage,
+
+        "docker_is_evidently_responsible":
+            False,
+
+        "assessment":
+            "unlikely",
+
+        "significant_containers":
+            [],
+
         "reason": (
             "Docker containers are running, but their "
             "observed memory utilization is low. Docker "
@@ -585,11 +625,14 @@ def ask_ollama(prompt):
 
         json={
             "model": OLLAMA_MODEL,
+
             "prompt": prompt,
+
             "stream": False,
 
             "options": {
-                "num_predict": OLLAMA_NUM_PREDICT
+                "num_predict":
+                    OLLAMA_NUM_PREDICT
             },
         },
 
@@ -648,7 +691,6 @@ def health():
         "service": "DevPulse Nexus",
         "version": "1.0.0",
         "ollama_model": OLLAMA_MODEL,
-        "ollama_url": OLLAMA_URL,
     }
 
 
@@ -832,17 +874,17 @@ def ask(question: str):
             "telemetry for the current environment state."
         )
 
-    except requests.exceptions.ConnectionError as exc:
+    except requests.exceptions.ConnectionError:
 
         ai_error = (
             "Could not connect to Ollama at "
-            f"{OLLAMA_URL}: {exc}"
+            f"{OLLAMA_URL}."
         )
 
         answer = (
             "The local AI model is unavailable. "
-            "Make sure the Ollama container is running "
-            f"and model '{OLLAMA_MODEL}' is available."
+            "Make sure Ollama is running and the configured "
+            f"model '{OLLAMA_MODEL}' is available."
         )
 
     except requests.exceptions.HTTPError as exc:
@@ -902,101 +944,649 @@ def ask(question: str):
     }
 
 
+================================================================================
+FILE: app/digital_twin.py
+================================================================================
+import psutil
+import platform
+import json
+from datetime import datetime
 
-# ============================================================
-# WEEK 5 MODEL COMPARISON
-# ============================================================
-
-from pydantic import BaseModel as _Week5BaseModel
-
-from app.classifier import classify_question
-from app.context import (
-    build_context,
-    build_combined_prompt,
-)
-from app.model_runner import run_all_models
-from app.evaluator import evaluate_all
-from app.comparison import (
-    compare_models,
-    load_historical,
-)
+from app.docker_monitor import get_docker_metrics
 
 
-class CompareRequest(_Week5BaseModel):
-    question: str
+def get_system_telemetry():
 
+    memory = psutil.virtual_memory()
+    disk = psutil.disk_usage("/")
 
-@app.get("/evaluation-history")
-def evaluation_history():
-    return load_historical()
+    return {
+        "platform": platform.system(),
+        "kernel": platform.release(),
 
+        "cpu": {
+            "usage_percent": psutil.cpu_percent(interval=0.5),
+            "cores": psutil.cpu_count()
+        },
 
-@app.post("/compare")
-def compare(request: CompareRequest):
-    question = request.question.strip()
+        "memory": {
+            "total_gb": round(memory.total / (1024 ** 3), 2),
+            "used_gb": round(memory.used / (1024 ** 3), 2),
+            "available_gb": round(memory.available / (1024 ** 3), 2),
+            "usage_percent": memory.percent
+        },
 
-    if not question:
-        return {
-            "error": "Question cannot be empty."
+        "disk": {
+            "total_gb": round(disk.total / (1024 ** 3), 2),
+            "used_gb": round(disk.used / (1024 ** 3), 2),
+            "free_gb": round(disk.free / (1024 ** 3), 2),
+            "usage_percent": disk.percent
         }
+    }
 
-    category = classify_question(question)
 
-    context = build_context(question)
+def get_digital_twin():
 
-    prompt = build_combined_prompt(
+    return {
+        "timestamp": datetime.now().isoformat(),
+
+        "system": get_system_telemetry(),
+
+        "docker": get_docker_metrics()
+    }
+
+
+if __name__ == "__main__":
+
+    twin = get_digital_twin()
+
+    print(json.dumps(twin, indent=2))
+
+
+================================================================================
+FILE: app/orchestrator.py
+================================================================================
+import json
+
+from app.rag import retrieve_context
+
+
+def orchestrate_request(
+    question,
+    digital_twin,
+    diagnosis,
+    rag_results=2,
+):
+    """
+    Coordinate the major DevPulse Nexus services.
+
+    Flow:
+    User Question
+        -> RAG Retrieval
+        -> Context
+        -> LLM-ready request
+
+    Telemetry and diagnosis are supplied by the
+    application service because they are authoritative.
+    """
+
+    documents = retrieve_context(
         question,
-        context,
+        number_of_results=rag_results,
     )
 
-    responses = run_all_models(prompt)
-
-    evaluated = evaluate_all(
-        question,
-        category,
-        responses,
-        context,
-    )
-
-    comparison = compare_models(
-        evaluated,
-        category,
+    context = (
+        "\n\n".join(documents)
+        if documents
+        else "No relevant knowledge was retrieved."
     )
 
     return {
         "question": question,
-        "category": category,
-        "models": evaluated,
-        "sourcegraph": {
-            "connected": bool(
-                context.get("sourcegraph")
-            ),
-            "query": question,
-            "role": (
-                "Repository search and evidence retrieval. "
-                "Matches are supplied as repository context to the "
-                "model and used by the live evaluator for grounding "
-                "and unsupported-file checks. Sourcegraph does not "
-                "generate or score the answer."
-            ),
-            "results": context.get(
-                "sourcegraph",
-                [],
-            ),
+
+        "services": {
+            "application_service": "FastAPI",
+            "orchestration_service": "DevPulse Orchestrator",
+            "retrieval_service": "RAG + ChromaDB",
+            "knowledge_service": "knowledge/docker.md",
+            "embedding_service": "all-MiniLM-L6-v2",
+            "llm_service": "Ollama",
+            "llm_model": "qwen2.5:1.5b",
         },
-        "rag": {
-            "retrieved": bool(
-                context.get("rag")
-            ),
-            "role": (
-                "Knowledge-base retrieval supplied alongside "
-                "repository evidence as model context."
-            ),
-            "sources": context.get(
-                "rag",
-                [],
-            ),
-        },
-        "comparison": comparison,
-        "historical": load_historical(),
+
+        "pipeline": [
+            "User Question",
+            "Application Service",
+            "Orchestration Service",
+            "RAG Retrieval Service",
+            "Relevant Context",
+            "LLM Service",
+            "Ollama",
+            "Qwen 2.5 1.5B",
+            "Response",
+        ],
+
+        "digital_twin": digital_twin,
+
+        "diagnosis": diagnosis,
+
+        "retrieved_context": documents,
+
+        "llm_context": context,
     }
+
+
+================================================================================
+FILE: app/rag.py
+================================================================================
+import chromadb
+
+from sentence_transformers import SentenceTransformer
+
+
+DB_PATH = "./chroma_db"
+MODEL_NAME = "all-MiniLM-L6-v2"
+
+
+client = chromadb.PersistentClient(path=DB_PATH)
+
+collection = client.get_collection(
+    name="devpulse_knowledge"
+)
+
+model = SentenceTransformer(MODEL_NAME)
+
+
+def retrieve_context(question, number_of_results=2):
+
+    question_embedding = model.encode(
+        [question]
+    )[0].tolist()
+
+    results = collection.query(
+        query_embeddings=[question_embedding],
+        n_results=number_of_results
+    )
+
+    documents = results["documents"][0]
+
+    return documents
+
+
+if __name__ == "__main__":
+
+    question = "How can I investigate high Docker memory usage?"
+
+    documents = retrieve_context(question)
+
+    print("\nQuestion:")
+    print(question)
+
+    print("\nRetrieved knowledge:")
+
+    for i, document in enumerate(documents, start=1):
+
+        print("\n" + "=" * 60)
+        print(f"RESULT {i}")
+        print("=" * 60)
+        print(document)
+
+
+================================================================================
+FILE: app/vector_store.py
+================================================================================
+import chromadb
+
+from chunking import load_document, chunk_text
+from embeddings import create_embeddings
+
+
+DB_PATH = "./chroma_db"
+
+
+def build_vector_store():
+
+    client = chromadb.PersistentClient(
+        path=DB_PATH
+    )
+
+    collection = client.get_or_create_collection(
+        name="devpulse_knowledge"
+    )
+
+    file_path = "knowledge/docker.md"
+
+    text = load_document(file_path)
+    chunks = chunk_text(text)
+
+    embeddings = create_embeddings(chunks)
+
+    ids = [
+        f"docker_chunk_{i}"
+        for i in range(len(chunks))
+    ]
+
+    collection.upsert(
+        ids=ids,
+        documents=chunks,
+        embeddings=embeddings.tolist(),
+        metadatas=[
+            {
+                "source": file_path,
+                "chunk": i
+            }
+            for i in range(len(chunks))
+        ]
+    )
+
+    print("Vector database created successfully!")
+    print(f"Collection: {collection.name}")
+    print(f"Documents stored: {collection.count()}")
+
+
+if __name__ == "__main__":
+    build_vector_store()
+
+
+================================================================================
+FILE: app/embeddings.py
+================================================================================
+from sentence_transformers import SentenceTransformer
+
+from chunking import load_document, chunk_text
+
+
+MODEL_NAME = "all-MiniLM-L6-v2"
+
+
+def create_embeddings(chunks):
+    model = SentenceTransformer(MODEL_NAME)
+
+    embeddings = model.encode(
+        chunks,
+        show_progress_bar=True
+    )
+
+    return embeddings
+
+
+if __name__ == "__main__":
+
+    file_path = "knowledge/docker.md"
+
+    text = load_document(file_path)
+
+    chunks = chunk_text(text)
+
+    embeddings = create_embeddings(chunks)
+
+    print("\nEmbedding complete!")
+    print(f"Number of chunks: {len(chunks)}")
+    print(f"Embedding dimensions: {embeddings.shape[1]}")
+
+    for i, embedding in enumerate(embeddings, start=1):
+        print(
+            f"Chunk {i}: "
+            f"{len(embedding)} dimensions"
+        )
+
+
+================================================================================
+FILE: app/chunking.py
+================================================================================
+from pathlib import Path
+
+
+def load_document(file_path):
+    return Path(file_path).read_text(encoding="utf-8")
+
+
+def chunk_text(text, chunk_size=500, overlap=100):
+    chunks = []
+
+    start = 0
+
+    while start < len(text):
+        end = start + chunk_size
+        chunk = text[start:end]
+
+        if chunk.strip():
+            chunks.append(chunk.strip())
+
+        start += chunk_size - overlap
+
+    return chunks
+
+
+if __name__ == "__main__":
+    file_path = "knowledge/docker.md"
+
+    text = load_document(file_path)
+
+    chunks = chunk_text(text)
+
+    print(f"Document length: {len(text)} characters")
+    print(f"Number of chunks: {len(chunks)}")
+
+    for i, chunk in enumerate(chunks, start=1):
+        print("\n" + "=" * 60)
+        print(f"CHUNK {i}")
+        print("=" * 60)
+        print(chunk)
+
+
+================================================================================
+FILE: app/docker_monitor.py
+================================================================================
+import subprocess
+import json
+
+
+def get_docker_metrics():
+
+    try:
+        result = subprocess.run(
+            [
+                "docker",
+                "stats",
+                "--no-stream",
+                "--format",
+                "{{json .}}"
+            ],
+            capture_output=True,
+            text=True,
+            timeout=10
+        )
+
+        if result.returncode != 0:
+            return {
+                "available": False,
+                "error": result.stderr.strip()
+            }
+
+        containers = []
+
+        for line in result.stdout.splitlines():
+
+            if not line.strip():
+                continue
+
+            data = json.loads(line)
+
+            containers.append({
+                "name": data.get("Name"),
+                "cpu_percent": data.get("CPUPerc"),
+                "memory_usage": data.get("MemUsage"),
+                "memory_percent": data.get("MemPerc"),
+                "network_io": data.get("NetIO"),
+                "block_io": data.get("BlockIO"),
+                "pids": data.get("PIDs")
+            })
+
+        return {
+            "available": True,
+            "container_count": len(containers),
+            "containers": containers
+        }
+
+    except FileNotFoundError:
+
+        return {
+            "available": False,
+            "error": "Docker command not found"
+        }
+
+    except subprocess.TimeoutExpired:
+
+        return {
+            "available": False,
+            "error": "Docker stats timed out"
+        }
+
+
+if __name__ == "__main__":
+
+    print(
+        json.dumps(
+            get_docker_metrics(),
+            indent=2
+        )
+    )
+
+
+================================================================================
+FILE: app/telemetry.py
+================================================================================
+import psutil
+import platform
+from datetime import datetime
+
+
+def get_system_metrics():
+
+    memory = psutil.virtual_memory()
+    disk = psutil.disk_usage("/")
+
+    processes = []
+
+    for process in psutil.process_iter(
+        ["pid", "name", "cpu_percent", "memory_percent"]
+    ):
+        try:
+            info = process.info
+
+            processes.append({
+                "pid": info["pid"],
+                "name": info["name"],
+                "cpu_percent": info["cpu_percent"],
+                "memory_percent": info["memory_percent"]
+            })
+
+        except (psutil.NoSuchProcess, psutil.AccessDenied):
+            pass
+
+    # Highest CPU processes
+    top_cpu = sorted(
+        processes,
+        key=lambda x: x["cpu_percent"],
+        reverse=True
+    )[:5]
+
+    # Highest memory processes
+    top_memory = sorted(
+        processes,
+        key=lambda x: x["memory_percent"],
+        reverse=True
+    )[:5]
+
+    return {
+        "timestamp": datetime.now().isoformat(),
+
+        "system": {
+            "platform": platform.system(),
+            "release": platform.release(),
+            "machine": platform.machine()
+        },
+
+        "cpu": {
+            "usage_percent": psutil.cpu_percent(interval=0.5),
+            "cores": psutil.cpu_count()
+        },
+
+        "memory": {
+            "total_gb": round(memory.total / (1024 ** 3), 2),
+            "used_gb": round(memory.used / (1024 ** 3), 2),
+            "available_gb": round(memory.available / (1024 ** 3), 2),
+            "usage_percent": memory.percent
+        },
+
+        "disk": {
+            "total_gb": round(disk.total / (1024 ** 3), 2),
+            "used_gb": round(disk.used / (1024 ** 3), 2),
+            "free_gb": round(disk.free / (1024 ** 3), 2),
+            "usage_percent": disk.percent
+        },
+
+        "top_cpu_processes": top_cpu,
+        "top_memory_processes": top_memory
+    }
+
+
+if __name__ == "__main__":
+
+    import json
+
+    metrics = get_system_metrics()
+
+    print(json.dumps(metrics, indent=2))
+
+
+================================================================================
+FILE: app/telemetry_history.py
+================================================================================
+import json
+import threading
+from collections import deque
+from datetime import datetime
+from pathlib import Path
+
+
+HISTORY_FILE = Path(__file__).resolve().parent.parent / "telemetry_history.json"
+
+MAX_RECORDS = 720
+
+_history = deque(maxlen=MAX_RECORDS)
+_lock = threading.Lock()
+
+
+def _load_history():
+    if not HISTORY_FILE.exists():
+        return
+
+    try:
+        with open(HISTORY_FILE, "r", encoding="utf-8") as file:
+            records = json.load(file)
+
+        if isinstance(records, list):
+            with _lock:
+                _history.extend(records[-MAX_RECORDS:])
+
+    except (OSError, json.JSONDecodeError):
+        pass
+
+
+def _save_history():
+    try:
+        temporary_file = HISTORY_FILE.with_suffix(".tmp")
+
+        with open(temporary_file, "w", encoding="utf-8") as file:
+            json.dump(list(_history), file, indent=2)
+
+        temporary_file.replace(HISTORY_FILE)
+
+    except OSError:
+        pass
+
+
+_load_history()
+
+
+def record_telemetry(digital_twin):
+    record = {
+        "timestamp": digital_twin.get(
+            "timestamp",
+            datetime.now().isoformat()
+        ),
+        "system": digital_twin.get("system", {}),
+        "docker": digital_twin.get("docker", {})
+    }
+
+    with _lock:
+        _history.append(record)
+        _save_history()
+
+    return record
+
+
+def get_history(limit=120):
+    try:
+        limit = int(limit)
+    except (TypeError, ValueError):
+        limit = 120
+
+    limit = max(1, min(limit, MAX_RECORDS))
+
+    with _lock:
+        return list(_history)[-limit:]
+
+
+def clear_history():
+    with _lock:
+        _history.clear()
+
+        try:
+            if HISTORY_FILE.exists():
+                HISTORY_FILE.unlink()
+        except OSError:
+            pass
+
+
+if __name__ == "__main__":
+    print(
+        json.dumps(
+            {
+                "records": len(get_history()),
+                "file": str(HISTORY_FILE)
+            },
+            indent=2
+        )
+    )
+
+
+================================================================================
+FILE: knowledge/docker.md
+================================================================================
+# Docker Memory Troubleshooting
+
+## Container Memory Usage
+
+Docker containers share the host Linux kernel. The memory consumed by a container depends largely on the application and processes running inside it.
+
+A container can consume significant memory when the application itself requires a large amount of memory, when memory is not released efficiently, or when workloads create temporary memory spikes.
+
+## Monitoring Container Memory
+
+Docker provides commands for monitoring container resource usage.
+
+The command:
+
+docker stats
+
+shows live CPU, memory, network, and block I/O statistics for running containers.
+
+The memory usage of a particular container should be compared with its expected workload and configured resource limits.
+
+## Memory Limits
+
+Docker allows administrators to configure memory limits for containers.
+
+For example:
+
+docker run --memory=512m IMAGE
+
+limits the container's memory allocation according to the configured Docker memory constraints.
+
+Resource limits should be selected based on the application's actual requirements.
+
+## Troubleshooting High Memory Usage
+
+When a container shows unexpectedly high memory usage:
+
+1. Identify the container using excessive memory.
+2. Inspect its application processes.
+3. Check recent application or configuration changes.
+4. Examine container logs.
+5. Compare current memory usage with historical behavior.
+6. Check whether appropriate memory limits are configured.
+7. Investigate possible application-level memory leaks.
+

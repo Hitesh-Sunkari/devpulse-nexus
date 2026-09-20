@@ -1,0 +1,22 @@
+Category,Model,Tests,Correctness %,Partial %,Failure %,Relevance %,Coverage %,Hallucination %,Latency sec,P95 sec,Output tokens,Tokens/sec,Code test pass %,RAG precision %,RAG recall %,Winner
+Explanation,qwen2.5:1.5b,4,75.0,25.0,0.0,87.5,28.33,25.0,70.87,153.35,2997,7.77,,,,tinyllama
+Explanation,phi3:mini,4,75.0,25.0,0.0,87.5,23.33,0.0,53.19,86.14,1888,4.74,,,,tinyllama
+Explanation,tinyllama,4,75.0,25.0,0.0,87.5,28.33,0.0,31.96,57.11,2242,16.74,,,,tinyllama
+Code Retrieval,qwen2.5:1.5b,4,50.0,0.0,50.0,50.0,75.0,0.0,315.05,153.35,2997,7.77,,,,qwen2.5:1.5b
+Code Retrieval,phi3:mini,4,50.0,0.0,50.0,50.0,58.33,0.0,46.36,86.14,1888,4.74,,,,qwen2.5:1.5b
+Code Retrieval,tinyllama,4,25.0,0.0,75.0,25.0,37.5,0.0,19.6,57.11,2242,16.74,,,,qwen2.5:1.5b
+Dependency Understanding,phi3:mini,4,50.0,50.0,0.0,75.0,42.71,0.0,19.03,86.14,1888,4.74,,,,qwen2.5:1.5b
+Dependency Understanding,qwen2.5:1.5b,4,50.0,50.0,0.0,75.0,45.83,0.0,18.13,153.35,2997,7.77,,,,qwen2.5:1.5b
+Dependency Understanding,tinyllama,4,50.0,25.0,25.0,62.5,39.58,0.0,3.06,57.11,2242,16.74,,,,qwen2.5:1.5b
+Bug Analysis,qwen2.5:1.5b,4,100.0,0.0,0.0,100.0,35.83,0.0,11.23,153.35,2997,7.77,,,,qwen2.5:1.5b
+Bug Analysis,tinyllama,4,50.0,50.0,0.0,75.0,16.25,0.0,21.82,57.11,2242,16.74,,,,qwen2.5:1.5b
+Bug Analysis,phi3:mini,4,75.0,25.0,0.0,87.5,25.42,0.0,12.51,86.14,1888,4.74,,,,qwen2.5:1.5b
+Code Generation,qwen2.5:1.5b,5,60.0,40.0,0.0,80.0,63.0,0.0,25.68,153.35,2997,7.77,,,,qwen2.5:1.5b
+Code Generation,tinyllama,5,20.0,80.0,0.0,60.0,44.0,0.0,5.56,57.11,2242,16.74,,,,qwen2.5:1.5b
+Code Generation,phi3:mini,5,20.0,80.0,0.0,60.0,35.0,0.0,20.12,86.14,1888,4.74,,,,qwen2.5:1.5b
+Refactoring,qwen2.5:1.5b,4,50.0,25.0,25.0,62.5,36.25,0.0,54.83,153.35,2997,7.77,,,,phi3:mini
+Refactoring,tinyllama,4,75.0,25.0,0.0,87.5,26.25,0.0,21.97,57.11,2242,16.74,,,,phi3:mini
+Refactoring,phi3:mini,4,75.0,25.0,0.0,87.5,41.25,0.0,10.15,86.14,1888,4.74,,,,phi3:mini
+RAG-based Question,qwen2.5:1.5b,5,100.0,0.0,0.0,100.0,56.33,0.0,7.22,153.35,2997,7.77,,,,qwen2.5:1.5b
+RAG-based Question,tinyllama,5,40.0,20.0,40.0,50.0,28.33,0.0,2.53,57.11,2242,16.74,,,,qwen2.5:1.5b
+RAG-based Question,phi3:mini,5,100.0,0.0,0.0,100.0,39.0,0.0,29.37,86.14,1888,4.74,,,,qwen2.5:1.5b

@@ -1,0 +1,41 @@
+services:
+  devpulse:
+    build: .
+    container_name: devpulse-nexus
+    ports:
+      - "8000:8000"
+
+    environment:
+      - SG_TOKEN=${SG_TOKEN}
+      - SOURCEGRAPH_URL=http://host.docker.internal:7080
+      - OLLAMA_URL=http://ollama:11434
+      - OLLAMA_MODEL=qwen2.5:1.5b
+
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+    volumes:
+      - .:/app
+      - backup_data:/backup
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker:ro
+
+    depends_on:
+      - ollama
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: devpulse-ollama
+    volumes:
+      - ollama_data:/root/.ollama
+
+  backup:
+    build: ./backup
+    container_name: devpulse-backup
+    volumes:
+      - .:/source:ro
+      - backup_data:/backup
+
+volumes:
+  ollama_data:
+  backup_data:

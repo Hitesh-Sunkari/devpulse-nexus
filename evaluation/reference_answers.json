@@ -1,0 +1,182 @@
+[
+  {
+    "id": 1,
+    "category": "Explanation",
+    "question": "What does the get_digital_twin() function do?",
+    "reference_answer": "get_digital_twin() builds a point-in-time representation of the developer environment. It combines live host telemetry from get_system_telemetry() with Docker telemetry from get_docker_metrics(), and adds a current timestamp."
+  },
+  {
+    "id": 2,
+    "category": "Explanation",
+    "question": "Explain how DevPulse collects host memory and CPU information.",
+    "reference_answer": "DevPulse collects host CPU and memory information using psutil inside get_system_telemetry(). CPU information includes usage_percent from psutil.cpu_percent(interval=0.3) and the CPU core count from psutil.cpu_count(). Memory information comes from psutil.virtual_memory() and includes total, used, available memory in GB and memory usage_percent."
+  },
+  {
+    "id": 3,
+    "category": "Explanation",
+    "question": "Explain the purpose of the deterministic diagnosis.",
+    "reference_answer": "The deterministic diagnosis analyzes the Digital Twin telemetry before the LLM runs. build_diagnosis() determines the Docker and host-memory assessment from telemetry. The LLM is used to explain the diagnosis rather than determine the diagnosis itself."
+  },
+  {
+    "id": 4,
+    "category": "Explanation",
+    "question": "Explain the role of the DevPulse orchestrator.",
+    "reference_answer": "parse_memory_percentage() converts Docker memory percentage strings such as '0.26%' into a float. It removes the percent sign, strips whitespace, and safely returns 0.0 for invalid values or None."
+  },
+  {
+    "id": 5,
+    "category": "Code Retrieval",
+    "question": "Which file retrieves knowledge from ChromaDB?",
+    "reference_answer": "The application creates a FastAPI application with app = FastAPI(...). The application is configured with the title 'DevPulse Nexus', a description covering developer environment observability, Digital Twin telemetry, Docker monitoring and RAG troubleshooting, and version '1.0.0'."
+  },
+  {
+    "id": 6,
+    "category": "Code Retrieval",
+    "question": "Which file collects Docker container statistics?",
+    "reference_answer": "The Ollama generation endpoint is configured as http://127.0.0.1:11434/api/generate, and the configured model is qwen2.5:1.5b."
+  },
+  {
+    "id": 7,
+    "category": "Code Retrieval",
+    "question": "Where is the Ollama model configured?",
+    "reference_answer": "The application retrieves RAG context through retrieve_context imported from app.rag. The configured number of RAG documents to retrieve is RAG_RESULTS = 2."
+  },
+  {
+    "id": 8,
+    "category": "Code Retrieval",
+    "question": "Which file stores telemetry history?",
+    "reference_answer": "The Docker monitoring function used by main.py is get_docker_metrics(), imported from app.docker_monitor."
+  },
+  {
+    "id": 9,
+    "category": "Dependency Understanding",
+    "question": "How does /ask connect FastAPI, RAG, diagnosis, and Ollama?",
+    "reference_answer": "get_system_telemetry() uses psutil to collect host telemetry, including CPU, memory and disk information. CPU data comes from psutil.cpu_percent() and psutil.cpu_count(), while memory data comes from psutil.virtual_memory()."
+  },
+  {
+    "id": 10,
+    "category": "Dependency Understanding",
+    "question": "What components are involved between a user question and the final answer?",
+    "reference_answer": "The Digital Twin combines host telemetry and Docker telemetry. get_digital_twin() returns a dictionary containing a timestamp, the system telemetry from get_system_telemetry(), and Docker telemetry from get_docker_metrics()."
+  },
+  {
+    "id": 11,
+    "category": "Dependency Understanding",
+    "question": "Which module does orchestrate_request() depend on for knowledge retrieval?",
+    "reference_answer": "Docker availability affects diagnosis. If Docker telemetry is unavailable, the diagnosis marks docker_status as unavailable, sets Docker container memory to unknown, and reports that Docker container memory cannot currently be evaluated."
+  },
+  {
+    "id": 12,
+    "category": "Dependency Understanding",
+    "question": "What happens to retrieved documents before they reach Ollama?",
+    "reference_answer": "SIGNIFICANT_CONTAINER_MEMORY_PERCENT is set to 20.0. The source describes a container using at least 20 percent of its Docker memory limit as potentially significant."
+  },
+  {
+    "id": 13,
+    "category": "Bug Analysis",
+    "question": "What happens if Docker is not installed or unavailable?",
+    "reference_answer": "The deterministic diagnosis runs before the LLM. It analyzes telemetry and produces the assessment. The source explicitly states that the LLM explains the diagnosis and does not determine the diagnosis."
+  },
+  {
+    "id": 14,
+    "category": "Bug Analysis",
+    "question": "What happens if Ollama times out?",
+    "reference_answer": "When Docker telemetry is unavailable, build_diagnosis() returns docker_status='unavailable', running_containers=None, docker_container_memory='unknown', and docker_is_evidently_responsible='unknown'. The assessment is also 'unknown' because container memory usage cannot be evaluated."
+  },
+  {
+    "id": 15,
+    "category": "Bug Analysis",
+    "question": "What could cause RAG retrieval to return no documents?",
+    "reference_answer": "get_digital_twin() returns a timestamp together with system telemetry and Docker telemetry. The system telemetry contains platform, kernel, CPU, memory and disk information."
+  },
+  {
+    "id": 16,
+    "category": "Bug Analysis",
+    "question": "How does the code prevent Docker from being incorrectly blamed for high host memory usage?",
+    "reference_answer": "The host memory usage percentage is obtained from psutil.virtual_memory().percent and stored as memory['usage_percent'] in get_system_telemetry(). build_diagnosis() reads that value as host_memory_usage."
+  },
+  {
+    "id": 17,
+    "category": "Code Generation",
+    "question": "Write Python code to calculate the average container memory percentage.",
+    "reference_answer": "A FastAPI application can be created with FastAPI(), and the source configures it with the title 'DevPulse Nexus'."
+  },
+  {
+    "id": 18,
+    "category": "Code Generation",
+    "question": "Write a function to identify containers using more than 50% memory.",
+    "reference_answer": "The application should use get_system_telemetry() for host telemetry and get_docker_metrics() for Docker telemetry, then combine those values in the Digital Twin returned by get_digital_twin()."
+  },
+  {
+    "id": 19,
+    "category": "Code Generation",
+    "question": "Write a test for parse_memory_percentage().",
+    "reference_answer": "A memory-percentage parser should remove '%' and convert the remaining value to float. Invalid values should be handled safely by returning 0.0, as implemented by parse_memory_percentage()."
+  },
+  {
+    "id": 20,
+    "category": "Code Generation",
+    "question": "Write a test verifying that zero running containers produces not_responsible.",
+    "reference_answer": "The deterministic diagnosis should execute before LLM generation. Telemetry is evaluated first, and the LLM should explain the resulting diagnosis rather than make the underlying diagnostic decision."
+  },
+  {
+    "id": 21,
+    "category": "Code Generation",
+    "question": "Write a FastAPI endpoint that returns the latest telemetry history record.",
+    "reference_answer": "A Docker memory threshold can be represented by SIGNIFICANT_CONTAINER_MEMORY_PERCENT = 20.0. A container using 20 percent or more of its Docker memory limit is considered potentially significant."
+  },
+  {
+    "id": 22,
+    "category": "Refactoring",
+    "question": "How could build_diagnosis() be refactored to make it easier to test?",
+    "reference_answer": "get_digital_twin() can be kept focused on assembling the point-in-time representation: timestamp, system telemetry and Docker telemetry. Host telemetry collection belongs in get_system_telemetry(), while Docker collection belongs in get_docker_metrics()."
+  },
+  {
+    "id": 23,
+    "category": "Refactoring",
+    "question": "How could the Ollama configuration be moved from hardcoded values to environment variables?",
+    "reference_answer": "parse_memory_percentage() provides a small, defensive conversion boundary: None and invalid values return 0.0, while strings containing a percentage are converted to float after removing the percent sign."
+  },
+  {
+    "id": 24,
+    "category": "Refactoring",
+    "question": "How could duplicate Digital Twin logic between main.py and digital_twin.py be reduced?",
+    "reference_answer": "The diagnosis logic should remain deterministic and separate from LLM explanation. build_diagnosis() should inspect the Digital Twin and explicitly handle unavailable Docker telemetry and the no-container case."
+  },
+  {
+    "id": 25,
+    "category": "Refactoring",
+    "question": "Suggest an improvement to the error handling in orchestrator.py.",
+    "reference_answer": "The code can be refactored by keeping configuration values such as RAG_RESULTS, OLLAMA_TIMEOUT and SIGNIFICANT_CONTAINER_MEMORY_PERCENT at the configuration level, while keeping telemetry collection and diagnosis in separate functions."
+  },
+  {
+    "id": 26,
+    "category": "RAG-based Question",
+    "question": "According to the Docker knowledge base, what command shows live container resource usage?",
+    "reference_answer": "The source describes RAG as part of DevPulse's troubleshooting capability and imports retrieve_context from app.rag."
+  },
+  {
+    "id": 27,
+    "category": "RAG-based Question",
+    "question": "According to the knowledge base, how should high Docker memory usage be investigated?",
+    "reference_answer": "The configured RAG result count is RAG_RESULTS = 2, meaning the application is configured to retrieve two RAG documents."
+  },
+  {
+    "id": 28,
+    "category": "RAG-based Question",
+    "question": "What Docker option can be used to configure a container memory limit?",
+    "reference_answer": "RAG context retrieval is performed through the retrieve_context function imported from app.rag."
+  },
+  {
+    "id": 29,
+    "category": "RAG-based Question",
+    "question": "What does the knowledge base recommend checking when a container unexpectedly uses high memory?",
+    "reference_answer": "The source does not support the claim that Docker is always responsible for high host memory usage. The deterministic diagnosis explicitly reports Docker responsibility as unknown when Docker telemetry is unavailable."
+  },
+  {
+    "id": 30,
+    "category": "RAG-based Question",
+    "question": "Does the retrieved knowledge say that Docker is always responsible for high host memory usage? Explain.",
+    "reference_answer": "No. The retrieved knowledge/source does not establish that Docker is always responsible for high host memory usage. The diagnosis is based on telemetry, and when Docker telemetry is unavailable the Docker responsibility assessment is 'unknown'."
+  }
+]

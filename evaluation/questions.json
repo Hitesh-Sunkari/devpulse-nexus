@@ -1,0 +1,38 @@
+[
+  {"id":1,"category":"Explanation","question":"What does the get_digital_twin() function do?"},
+  {"id":2,"category":"Explanation","question":"Explain how DevPulse collects host memory and CPU information."},
+  {"id":3,"category":"Explanation","question":"Explain the purpose of the deterministic diagnosis."},
+  {"id":4,"category":"Explanation","question":"Explain the role of the DevPulse orchestrator."},
+
+  {"id":5,"category":"Code Retrieval","question":"Which file retrieves knowledge from ChromaDB?"},
+  {"id":6,"category":"Code Retrieval","question":"Which file collects Docker container statistics?"},
+  {"id":7,"category":"Code Retrieval","question":"Where is the Ollama model configured?"},
+  {"id":8,"category":"Code Retrieval","question":"Which file stores telemetry history?"},
+
+  {"id":9,"category":"Dependency Understanding","question":"How does /ask connect FastAPI, RAG, diagnosis, and Ollama?"},
+  {"id":10,"category":"Dependency Understanding","question":"What components are involved between a user question and the final answer?"},
+  {"id":11,"category":"Dependency Understanding","question":"Which module does orchestrate_request() depend on for knowledge retrieval?"},
+  {"id":12,"category":"Dependency Understanding","question":"What happens to retrieved documents before they reach Ollama?"},
+
+  {"id":13,"category":"Bug Analysis","question":"What happens if Docker is not installed or unavailable?"},
+  {"id":14,"category":"Bug Analysis","question":"What happens if Ollama times out?"},
+  {"id":15,"category":"Bug Analysis","question":"What could cause RAG retrieval to return no documents?"},
+  {"id":16,"category":"Bug Analysis","question":"How does the code prevent Docker from being incorrectly blamed for high host memory usage?"},
+
+  {"id":17,"category":"Code Generation","question":"Write Python code to calculate the average container memory percentage."},
+  {"id":18,"category":"Code Generation","question":"Write a function to identify containers using more than 50% memory."},
+  {"id":19,"category":"Code Generation","question":"Write a test for parse_memory_percentage()."},
+  {"id":20,"category":"Code Generation","question":"Write a test verifying that zero running containers produces not_responsible."},
+  {"id":21,"category":"Code Generation","question":"Write a FastAPI endpoint that returns the latest telemetry history record."},
+
+  {"id":22,"category":"Refactoring","question":"How could build_diagnosis() be refactored to make it easier to test?"},
+  {"id":23,"category":"Refactoring","question":"How could the Ollama configuration be moved from hardcoded values to environment variables?"},
+  {"id":24,"category":"Refactoring","question":"How could duplicate Digital Twin logic between main.py and digital_twin.py be reduced?"},
+  {"id":25,"category":"Refactoring","question":"Suggest an improvement to the error handling in orchestrator.py."},
+
+  {"id":26,"category":"RAG-based Question","question":"According to the Docker knowledge base, what command shows live container resource usage?"},
+  {"id":27,"category":"RAG-based Question","question":"According to the knowledge base, how should high Docker memory usage be investigated?"},
+  {"id":28,"category":"RAG-based Question","question":"What Docker option can be used to configure a container memory limit?"},
+  {"id":29,"category":"RAG-based Question","question":"What does the knowledge base recommend checking when a container unexpectedly uses high memory?"},
+  {"id":30,"category":"RAG-based Question","question":"Does the retrieved knowledge say that Docker is always responsible for high host memory usage? Explain."}
+]

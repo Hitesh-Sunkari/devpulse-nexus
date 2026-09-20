@@ -7,28 +7,104 @@
     <title>DevPulse Nexus</title>
 
     <style>
+        /* =========================================================
+           DESIGN TOKENS
+        ========================================================= */
+
+        :root {
+            color-scheme: dark;
+
+            --bg: #0b1020;
+            --bg-soft: #10172a;
+
+            --header: rgba(11, 16, 32, 0.88);
+
+            --surface: #121a2d;
+            --surface-2: #17213a;
+            --surface-3: #1c2742;
+
+            --border: #263452;
+            --border-soft: rgba(148, 163, 184, 0.14);
+
+            --text: #eef3ff;
+            --text-soft: #c6d0e4;
+            --muted: #8f9db7;
+
+            --accent: #5b8cff;
+            --accent-strong: #4677ee;
+            --accent-2: #7c5cff;
+
+            --success: #2ecc8a;
+            --warning: #f5b942;
+            --danger: #ff5c70;
+
+            --shadow:
+                0 12px 35px rgba(0, 0, 0, 0.22);
+
+            --shadow-small:
+                0 5px 18px rgba(0, 0, 0, 0.15);
+
+            --radius: 16px;
+            --radius-small: 10px;
+        }
+
+
+        /* =========================================================
+           LIGHT MODE
+        ========================================================= */
+
+        :root[data-theme="light"] {
+            color-scheme: light;
+
+            --bg: #f5f7fb;
+            --bg-soft: #eef2f7;
+
+            --header: rgba(255, 255, 255, 0.92);
+
+            --surface: #ffffff;
+            --surface-2: #f8fafc;
+            --surface-3: #eef3f9;
+
+            --border: #dce3ed;
+            --border-soft: rgba(100, 116, 139, 0.18);
+
+            --text: #172033;
+            --text-soft: #34415a;
+            --muted: #667085;
+
+            --accent: #356ae6;
+            --accent-strong: #2858cc;
+            --accent-2: #7048d8;
+
+            --success: #159b69;
+            --warning: #c78305;
+            --danger: #dc3f55;
+
+            --shadow:
+                0 10px 28px rgba(15, 23, 42, 0.07);
+
+            --shadow-small:
+                0 4px 15px rgba(15, 23, 42, 0.06);
+        }
+
+
+        /* =========================================================
+           RESET
+        ========================================================= */
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
-        :root {
-            --bg: #0b1020;
-            --panel: #121a2d;
-            --panel-2: #17213a;
-            --border: #263452;
-            --text: #e8eefc;
-            --muted: #91a0bc;
-            --accent: #5b8cff;
-            --accent-2: #7c5cff;
-            --success: #2ecc8a;
-            --warning: #f5b942;
-            --danger: #ff5c70;
-            --shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
+            min-height: 100vh;
+
             font-family:
                 Inter,
                 ui-sans-serif,
@@ -40,14 +116,17 @@
 
             background:
                 radial-gradient(
-                    circle at top right,
-                    rgba(91, 140, 255, 0.12),
+                    circle at 90% 0%,
+                    rgba(91, 140, 255, 0.10),
                     transparent 30%
                 ),
                 var(--bg);
 
             color: var(--text);
-            min-height: 100vh;
+
+            transition:
+                background 0.25s ease,
+                color 0.25s ease;
         }
 
         button,
@@ -59,45 +138,62 @@
             cursor: pointer;
         }
 
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
         .app {
             min-height: 100vh;
         }
 
-        /* =====================================================
+
+        /* =========================================================
            HEADER
-        ===================================================== */
+        ========================================================= */
 
         .header {
-            height: 76px;
-            border-bottom: 1px solid var(--border);
-            background: rgba(11, 16, 32, 0.88);
-            backdrop-filter: blur(16px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+
+            min-height: 72px;
 
             display: flex;
             align-items: center;
             justify-content: space-between;
 
-            padding: 0 32px;
+            padding: 10px 30px;
 
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            background: var(--header);
+            border-bottom: 1px solid var(--border);
+
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+
+            transition:
+                background 0.25s ease,
+                border-color 0.25s ease;
         }
 
         .brand {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
+
+            min-width: 220px;
         }
 
         .brand-logo {
-            width: 42px;
-            height: 42px;
-
-            border-radius: 12px;
+            width: 40px;
+            height: 40px;
 
             display: grid;
             place-items: center;
+
+            border-radius: 11px;
+
+            color: #ffffff;
 
             background:
                 linear-gradient(
@@ -106,175 +202,331 @@
                     var(--accent-2)
                 );
 
+            font-size: 15px;
             font-weight: 800;
-            font-size: 17px;
 
             box-shadow:
-                0 8px 25px rgba(91, 140, 255, 0.25);
+                0 7px 20px rgba(91, 140, 255, 0.22);
         }
 
         .brand-title {
-            font-size: 19px;
+            font-size: 17px;
             font-weight: 750;
-            letter-spacing: 0.2px;
+            letter-spacing: -0.1px;
         }
 
         .brand-subtitle {
-            color: var(--muted);
-            font-size: 12px;
             margin-top: 2px;
+
+            color: var(--muted);
+
+            font-size: 11px;
         }
+
+
+        /* =========================================================
+           NAVIGATION
+        ========================================================= */
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 4px;
+        }
+
+        .nav-link {
+            padding: 8px 11px;
+
+            border-radius: 8px;
+
+            color: var(--muted);
+
+            font-size: 12px;
+            font-weight: 600;
+
+            transition:
+                color 0.18s ease,
+                background 0.18s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--text);
+            background: var(--surface-2);
+        }
+
+        .nav-link.active {
+            color: var(--accent);
+            background:
+                rgba(91, 140, 255, 0.10);
+        }
+
+
+        /* =========================================================
+           HEADER ACTIONS
+        ========================================================= */
 
         .header-right {
             display: flex;
             align-items: center;
-            gap: 18px;
+            justify-content: flex-end;
+
+            gap: 8px;
+
+            min-width: 260px;
         }
 
         .connection {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 7px;
+
+            margin-right: 3px;
 
             color: var(--muted);
-            font-size: 13px;
+
+            font-size: 11px;
+            white-space: nowrap;
         }
 
         .status-dot {
-            width: 9px;
-            height: 9px;
+            width: 8px;
+            height: 8px;
+
             border-radius: 50%;
+
             background: var(--success);
-            box-shadow: 0 0 12px rgba(46, 204, 138, 0.65);
+
+            box-shadow:
+                0 0 9px rgba(46, 204, 138, 0.55);
         }
 
         .status-dot.error {
             background: var(--danger);
-            box-shadow: 0 0 12px rgba(255, 92, 112, 0.65);
+
+            box-shadow:
+                0 0 9px rgba(255, 92, 112, 0.50);
         }
 
-        .refresh-btn {
-            border: 1px solid var(--border);
-            background: var(--panel);
-            color: var(--text);
+        .header-btn {
+            min-height: 36px;
 
-            padding: 9px 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+
+            padding: 8px 12px;
+
+            border: 1px solid var(--border);
+
             border-radius: 9px;
 
-            transition: 0.2s;
+            background: var(--surface);
+            color: var(--text);
+
+            font-size: 12px;
+            font-weight: 650;
+
+            transition:
+                background 0.18s ease,
+                border-color 0.18s ease,
+                transform 0.18s ease;
         }
 
-        .refresh-btn:hover {
-            background: var(--panel-2);
+        .header-btn:hover {
+            background: var(--surface-2);
             border-color: var(--accent);
         }
 
-        /* =====================================================
+        .header-btn:active {
+            transform: translateY(1px);
+        }
+
+        .theme-icon {
+            font-size: 15px;
+            line-height: 1;
+        }
+
+
+        /* =========================================================
            MAIN
-        ===================================================== */
+        ========================================================= */
 
         .main {
-            max-width: 1500px;
+            width: min(1480px, calc(100% - 48px));
+
             margin: 0 auto;
-            padding: 30px 32px 50px;
+
+            padding: 30px 0 48px;
         }
 
         .page-heading {
-            margin-bottom: 25px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 22px;
         }
 
         .page-heading h1 {
-            font-size: 28px;
-            letter-spacing: -0.5px;
+            font-size: 27px;
+            line-height: 1.15;
+
+            letter-spacing: -0.7px;
         }
 
         .page-heading p {
-            color: var(--muted);
             margin-top: 7px;
-            font-size: 14px;
+
+            color: var(--muted);
+
+            font-size: 13px;
         }
 
-        /* =====================================================
-           METRIC CARDS
-        ===================================================== */
+        .overview-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+
+            padding: 7px 10px;
+
+            border: 1px solid var(--border);
+            border-radius: 20px;
+
+            background: var(--surface);
+
+            color: var(--muted);
+
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+
+        /* =========================================================
+           METRICS
+        ========================================================= */
 
         .metrics {
             display: grid;
+
             grid-template-columns:
                 repeat(4, minmax(0, 1fr));
 
-            gap: 16px;
-            margin-bottom: 20px;
+            gap: 15px;
+
+            margin-bottom: 18px;
         }
 
         .metric-card {
-            background: var(--panel);
+            position: relative;
+
+            padding: 18px;
+
+            background: var(--surface);
+
             border: 1px solid var(--border);
-            border-radius: 15px;
 
-            padding: 20px;
+            border-radius: var(--radius);
 
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-small);
+
+            overflow: hidden;
+
+            transition:
+                background 0.25s ease,
+                border-color 0.25s ease,
+                transform 0.18s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-1px);
+            border-color:
+                rgba(91, 140, 255, 0.35);
         }
 
         .metric-top {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
         }
 
         .metric-label {
             color: var(--muted);
-            font-size: 13px;
+
+            font-size: 12px;
+            font-weight: 600;
         }
 
         .metric-icon {
-            width: 34px;
-            height: 34px;
+            width: 32px;
+            height: 32px;
 
             display: grid;
             place-items: center;
 
             border-radius: 9px;
 
-            background: var(--panel-2);
+            background: var(--surface-3);
+
             color: var(--accent);
 
-            font-size: 14px;
-            font-weight: 700;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.3px;
         }
 
         .metric-value {
-            font-size: 30px;
-            font-weight: 750;
+            margin-top: 13px;
 
-            margin-top: 14px;
+            font-size: 29px;
+            line-height: 1;
+
+            font-weight: 760;
+            letter-spacing: -0.8px;
         }
 
         .metric-secondary {
+            min-height: 17px;
+
+            margin-top: 7px;
+
             color: var(--muted);
-            font-size: 12px;
-            margin-top: 5px;
+
+            font-size: 11px;
         }
 
         .progress {
-            height: 6px;
-            background: #202b46;
+            height: 5px;
 
-            border-radius: 20px;
+            margin-top: 14px;
 
             overflow: hidden;
-            margin-top: 16px;
+
+            border-radius: 10px;
+
+            background: var(--surface-3);
         }
 
         .progress-bar {
+            width: 0;
             height: 100%;
-            width: 0%;
 
             border-radius: inherit;
 
-            transition: width 0.5s ease;
-            background: var(--accent);
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--accent),
+                    var(--accent-2)
+                );
+
+            transition:
+                width 0.5s ease,
+                background 0.25s ease;
         }
 
         .progress-bar.warning {
@@ -285,206 +537,187 @@
             background: var(--danger);
         }
 
-        /* =====================================================
-           GRID
-        ===================================================== */
+
+        /* =========================================================
+           PANELS
+        ========================================================= */
 
         .dashboard-grid {
             display: grid;
 
             grid-template-columns:
                 minmax(0, 1.35fr)
-                minmax(340px, 0.65fr);
+                minmax(320px, 0.65fr);
 
-            gap: 20px;
+            gap: 18px;
 
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .panel {
-            background: var(--panel);
+            scroll-margin-top: 92px;
+
+            padding: 20px;
+
+            background: var(--surface);
+
             border: 1px solid var(--border);
 
-            border-radius: 15px;
+            border-radius: var(--radius);
 
-            padding: 22px;
+            box-shadow: var(--shadow-small);
 
-            box-shadow: var(--shadow);
+            transition:
+                background 0.25s ease,
+                border-color 0.25s ease;
         }
 
         .panel-header {
             display: flex;
+            align-items: flex-start;
             justify-content: space-between;
-            align-items: center;
 
-            margin-bottom: 20px;
+            gap: 15px;
+
+            margin-bottom: 17px;
         }
 
         .panel-title {
-            font-size: 16px;
-            font-weight: 700;
+            font-size: 15px;
+            font-weight: 720;
+            letter-spacing: -0.1px;
         }
 
         .panel-description {
-            color: var(--muted);
-            font-size: 12px;
             margin-top: 4px;
+
+            color: var(--muted);
+
+            font-size: 11px;
+            line-height: 1.45;
         }
+
+
+        /* =========================================================
+           BADGES
+        ========================================================= */
 
         .badge {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
 
-            padding: 5px 9px;
+            min-height: 24px;
+
+            padding: 4px 9px;
 
             border-radius: 20px;
 
-            font-size: 11px;
-            font-weight: 700;
+            background:
+                rgba(46, 204, 138, 0.10);
 
-            background: rgba(46, 204, 138, 0.12);
             color: var(--success);
+
+            font-size: 10px;
+            font-weight: 750;
+
+            white-space: nowrap;
         }
 
         .badge.warning {
-            background: rgba(245, 185, 66, 0.12);
+            background:
+                rgba(245, 185, 66, 0.12);
+
             color: var(--warning);
         }
 
         .badge.danger {
-            background: rgba(255, 92, 112, 0.12);
+            background:
+                rgba(255, 92, 112, 0.11);
+
             color: var(--danger);
         }
 
-        /* =====================================================
-           SYSTEM DETAIL
-        ===================================================== */
+
+        /* =========================================================
+           DIGITAL TWIN
+        ========================================================= */
 
         .system-details {
             display: grid;
 
             grid-template-columns:
-                repeat(2, minmax(0, 1fr));
+                repeat(3, minmax(0, 1fr));
 
-            gap: 12px;
+            gap: 10px;
         }
 
         .detail {
-            padding: 14px;
+            min-width: 0;
 
-            background: var(--panel-2);
+            padding: 13px;
 
-            border: 1px solid var(--border);
-            border-radius: 10px;
+            background: var(--surface-2);
+
+            border: 1px solid var(--border-soft);
+
+            border-radius: var(--radius-small);
+
+            transition:
+                background 0.25s ease,
+                border-color 0.25s ease;
         }
 
         .detail-label {
             color: var(--muted);
-            font-size: 11px;
+
+            font-size: 10px;
+            font-weight: 600;
         }
 
         .detail-value {
             margin-top: 6px;
-            font-size: 14px;
-            font-weight: 650;
-        }
 
-        /* =====================================================
-           DOCKER
-        ===================================================== */
-
-        .docker-empty {
-            padding: 30px 10px;
-            text-align: center;
-            color: var(--muted);
-        }
-
-        .docker-empty strong {
-            display: block;
             color: var(--text);
-            margin-bottom: 7px;
+
+            font-size: 13px;
+            font-weight: 680;
+
+            word-break: break-word;
         }
 
-        .container-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
 
-        .container-row {
-            background: var(--panel-2);
-            border: 1px solid var(--border);
-
-            padding: 14px;
-
-            border-radius: 10px;
-        }
-
-        .container-row-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .container-name {
-            font-weight: 650;
-            font-size: 14px;
-        }
-
-        .container-running {
-            color: var(--success);
-            font-size: 11px;
-        }
-
-        .container-stats {
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 8px;
-
-            margin-top: 12px;
-        }
-
-        .container-stat {
-            color: var(--muted);
-            font-size: 11px;
-        }
-
-        .container-stat span {
-            display: block;
-            color: var(--text);
-            margin-top: 4px;
-            font-size: 12px;
-        }
-
-        /* =====================================================
+        /* =========================================================
            DIAGNOSIS
-        ===================================================== */
+        ========================================================= */
 
         .diagnosis-card {
+            padding: 16px;
+
+            background: var(--surface-2);
+
+            border: 1px solid var(--border-soft);
+
             border-radius: 12px;
-
-            padding: 17px;
-
-            background: var(--panel-2);
-
-            border: 1px solid var(--border);
         }
 
         .diagnosis-status {
             display: flex;
             align-items: center;
-            gap: 10px;
 
-            margin-bottom: 15px;
+            gap: 9px;
+
+            margin-bottom: 12px;
         }
 
         .diagnosis-indicator {
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
+
+            flex: 0 0 auto;
+
             border-radius: 50%;
+
             background: var(--success);
         }
 
@@ -497,64 +730,165 @@
         }
 
         .diagnosis-title {
+            font-size: 14px;
             font-weight: 700;
-            font-size: 15px;
         }
 
         .diagnosis-reason {
-            color: var(--muted);
-            font-size: 13px;
-            line-height: 1.6;
+            color: var(--text-soft);
+
+            font-size: 12px;
+            line-height: 1.65;
         }
 
         .diagnosis-meta {
             display: grid;
 
             grid-template-columns:
-                repeat(2, 1fr);
+                repeat(2, minmax(0, 1fr));
 
-            gap: 10px;
+            gap: 9px;
 
-            margin-top: 16px;
+            margin-top: 14px;
         }
 
-        /* =====================================================
-           HISTORY
-        ===================================================== */
+
+        /* =========================================================
+           DOCKER
+        ========================================================= */
 
         .history-panel {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
+        .container-list {
+            display: flex;
+            flex-direction: column;
+
+            gap: 9px;
+        }
+
+        .container-row {
+            padding: 13px;
+
+            background: var(--surface-2);
+
+            border: 1px solid var(--border-soft);
+
+            border-radius: 11px;
+        }
+
+        .container-row-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 10px;
+        }
+
+        .container-name {
+            color: var(--text);
+
+            font-size: 13px;
+            font-weight: 680;
+
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .container-running {
+            color: var(--success);
+
+            font-size: 9px;
+            font-weight: 800;
+
+            letter-spacing: 0.4px;
+        }
+
+        .container-stats {
+            display: grid;
+
+            grid-template-columns:
+                repeat(6, minmax(0, 1fr));
+
+            gap: 8px;
+
+            margin-top: 11px;
+        }
+
+        .container-stat {
+            color: var(--muted);
+
+            font-size: 9px;
+            font-weight: 600;
+        }
+
+        .container-stat span {
+            display: block;
+
+            margin-top: 4px;
+
+            color: var(--text);
+
+            font-size: 11px;
+            font-weight: 650;
+
+            word-break: break-word;
+        }
+
+        .docker-empty {
+            padding: 28px 12px;
+
+            text-align: center;
+
+            color: var(--muted);
+
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .docker-empty strong {
+            display: block;
+
+            margin-bottom: 4px;
+
+            color: var(--text);
+
+            font-size: 13px;
+        }
+
+
+        /* =========================================================
+           HISTORY
+        ========================================================= */
+
         .history-chart {
-            height: 230px;
+            height: 220px;
 
             display: flex;
             align-items: flex-end;
 
             gap: 5px;
 
-            padding:
-                20px
-                10px
-                0;
+            padding: 20px 10px 0;
 
             overflow-x: auto;
+
+            border-bottom: 1px solid var(--border-soft);
         }
 
         .history-bar-wrapper {
-            min-width: 22px;
+            min-width: 21px;
             height: 100%;
 
             display: flex;
             align-items: flex-end;
-
             justify-content: center;
         }
 
         .history-bar {
-            width: 14px;
-
+            width: 13px;
             min-height: 3px;
 
             border-radius:
@@ -574,75 +908,89 @@
         }
 
         .history-empty {
-            height: 100%;
-
             width: 100%;
+            height: 100%;
 
             display: grid;
             place-items: center;
 
             color: var(--muted);
-            font-size: 13px;
+
+            font-size: 12px;
         }
 
         .history-legend {
             display: flex;
             justify-content: space-between;
 
-            color: var(--muted);
-            font-size: 11px;
-
             margin-top: 8px;
+
+            color: var(--muted);
+
+            font-size: 10px;
         }
 
-        /* =====================================================
-           AI ASSISTANT
-        ===================================================== */
+
+        /* =========================================================
+           ASK NEXUS
+        ========================================================= */
 
         .ai-panel {
-            margin-bottom: 20px;
+            scroll-margin-top: 92px;
+            margin-bottom: 18px;
         }
 
         .question-form {
             display: flex;
-            gap: 10px;
+
+            gap: 9px;
         }
 
         .question-input {
             flex: 1;
 
-            background: var(--panel-2);
+            min-width: 0;
+            min-height: 43px;
+
+            padding: 11px 13px;
 
             border: 1px solid var(--border);
-
-            color: var(--text);
-
-            padding: 13px 15px;
 
             border-radius: 10px;
 
             outline: none;
+
+            background: var(--surface-2);
+            color: var(--text);
+
+            font-size: 12px;
+
+            transition:
+                border-color 0.18s ease,
+                box-shadow 0.18s ease,
+                background 0.25s ease;
+        }
+
+        .question-input::placeholder {
+            color: var(--muted);
         }
 
         .question-input:focus {
             border-color: var(--accent);
-        }
 
-        .question-input::placeholder {
-            color: #65738f;
+            box-shadow:
+                0 0 0 3px
+                rgba(91, 140, 255, 0.10);
         }
 
         .ask-btn {
+            min-width: 112px;
+
             border: none;
 
-            padding:
-                0 22px;
+            padding: 0 19px;
 
             border-radius: 10px;
-
-            color: white;
-
-            font-weight: 700;
 
             background:
                 linear-gradient(
@@ -651,25 +999,35 @@
                     var(--accent-2)
                 );
 
-            transition: 0.2s;
+            color: #ffffff;
+
+            font-size: 12px;
+            font-weight: 720;
+
+            transition:
+                transform 0.18s ease,
+                box-shadow 0.18s ease,
+                opacity 0.18s ease;
         }
 
         .ask-btn:hover {
             transform: translateY(-1px);
+
             box-shadow:
-                0 8px 22px
-                rgba(91, 140, 255, 0.25);
+                0 8px 20px
+                rgba(91, 140, 255, 0.22);
         }
 
         .ask-btn:disabled {
             opacity: 0.55;
-            cursor: not-allowed;
+            cursor: wait;
             transform: none;
         }
 
         .ai-result {
-            margin-top: 18px;
             display: none;
+
+            margin-top: 15px;
         }
 
         .ai-result.visible {
@@ -677,75 +1035,163 @@
         }
 
         .ai-answer {
-            background: var(--panel-2);
+            padding: 16px;
 
-            border: 1px solid var(--border);
+            background: var(--surface-2);
 
-            border-radius: 12px;
+            border: 1px solid var(--border-soft);
 
-            padding: 18px;
+            border-radius: 11px;
+
+            color: var(--text-soft);
 
             white-space: pre-wrap;
 
-            font-size: 13px;
-            line-height: 1.65;
-
-            color: #dbe4f8;
+            font-size: 12px;
+            line-height: 1.7;
         }
 
         .ai-meta {
             display: flex;
-            gap: 18px;
+            flex-wrap: wrap;
 
-            margin-top: 10px;
+            gap: 14px;
+
+            margin-top: 9px;
 
             color: var(--muted);
-            font-size: 11px;
+
+            font-size: 10px;
         }
 
-        /* =====================================================
+
+        /* =========================================================
            FOOTER
-        ===================================================== */
+        ========================================================= */
 
         .footer {
+            padding: 8px 20px 25px;
+
             text-align: center;
 
             color: var(--muted);
 
-            font-size: 11px;
-
-            padding: 15px;
+            font-size: 10px;
         }
 
-        /* =====================================================
-           RESPONSIVE
-        ===================================================== */
 
-        @media (max-width: 1050px) {
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width: 1150px) {
+
+            .header {
+                padding: 10px 20px;
+            }
+
+            .nav-link {
+                padding: 8px 8px;
+            }
+
+            .header-right {
+                min-width: auto;
+            }
+
+            .brand {
+                min-width: auto;
+            }
+
+            .brand-subtitle {
+                display: none;
+            }
+
+            .container-stats {
+                grid-template-columns:
+                    repeat(3, minmax(0, 1fr));
+            }
+        }
+
+
+        @media (max-width: 900px) {
+
             .metrics {
                 grid-template-columns:
-                    repeat(2, 1fr);
+                    repeat(2, minmax(0, 1fr));
             }
 
             .dashboard-grid {
                 grid-template-columns: 1fr;
             }
-        }
 
-        @media (max-width: 650px) {
-            .header {
-                padding: 0 16px;
+            .system-details {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
             }
 
-            .header-right .refresh-btn {
+            .nav {
+                display: none;
+            }
+
+            .header-right {
+                margin-left: auto;
+            }
+        }
+
+
+        @media (max-width: 650px) {
+
+            .header {
+                min-height: 64px;
+
+                padding:
+                    9px 14px;
+            }
+
+            .brand-title {
+                font-size: 15px;
+            }
+
+            .brand-logo {
+                width: 36px;
+                height: 36px;
+            }
+
+            .connection {
+                display: none;
+            }
+
+            .header-btn {
+                min-height: 34px;
+                padding: 7px 9px;
+            }
+
+            .header-btn .btn-text {
                 display: none;
             }
 
             .main {
-                padding:
-                    22px
-                    16px
-                    40px;
+                width: min(
+                    100% - 28px,
+                    1480px
+                );
+
+                padding-top: 22px;
+            }
+
+            .page-heading {
+                align-items: flex-start;
+                flex-direction: column;
+
+                margin-bottom: 18px;
+            }
+
+            .page-heading h1 {
+                font-size: 23px;
+            }
+
+            .overview-label {
+                display: none;
             }
 
             .metrics {
@@ -756,28 +1202,269 @@
                 grid-template-columns: 1fr;
             }
 
+            .diagnosis-meta {
+                grid-template-columns: 1fr;
+            }
+
+            .container-stats {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
             .question-form {
                 flex-direction: column;
             }
 
             .ask-btn {
-                padding: 12px;
+                min-height: 42px;
+            }
+
+            .panel {
+                padding: 16px;
             }
         }
     </style>
+
+<style id="week5-compare-css">
+.week5-section {
+    margin-top: 28px;
+}
+
+.week5-question {
+    display: flex;
+    gap: 12px;
+    align-items: stretch;
+}
+
+.week5-question textarea {
+    flex: 1;
+    min-height: 74px;
+    resize: vertical;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid var(--border, #333);
+    background: var(--surface, #111);
+    color: inherit;
+    font: inherit;
+}
+
+.week5-question button {
+    min-width: 130px;
+    border: 0;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 700;
+    padding: 12px 18px;
+}
+
+.week5-status {
+    margin-top: 12px;
+    min-height: 22px;
+    opacity: .8;
+}
+
+.week5-category {
+    display: inline-flex;
+    margin-top: 10px;
+    padding: 7px 11px;
+    border-radius: 999px;
+    border: 1px solid var(--border, #333);
+    font-size: 13px;
+}
+
+.week5-model-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 18px;
+}
+
+.week5-model-card {
+    border: 1px solid var(--border, #333);
+    border-radius: 14px;
+    padding: 17px;
+    background: var(--card, rgba(255,255,255,.03));
+}
+
+.week5-model-name {
+    font-weight: 800;
+    margin-bottom: 9px;
+}
+
+.week5-score {
+    font-size: 30px;
+    font-weight: 800;
+    margin: 8px 0;
+}
+
+.week5-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 7px;
+    font-size: 12px;
+    opacity: .88;
+}
+
+.week5-answer {
+    margin-top: 13px;
+    padding: 12px;
+    border-radius: 10px;
+    background: rgba(127,127,127,.09);
+    white-space: pre-wrap;
+    line-height: 1.5;
+    max-height: 310px;
+    overflow: auto;
+    font-size: 13px;
+}
+
+.week5-result {
+    margin-top: 18px;
+    padding: 16px;
+    border-radius: 14px;
+    border: 1px solid var(--border, #333);
+}
+
+.week5-table-wrap {
+    overflow-x: auto;
+    margin-top: 16px;
+}
+
+.week5-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 680px;
+}
+
+.week5-table th,
+.week5-table td {
+    padding: 10px;
+    border-bottom: 1px solid var(--border, #333);
+    text-align: left;
+}
+
+.week5-table th {
+    font-size: 12px;
+    opacity: .7;
+}
+
+.week5-bars {
+    margin-top: 16px;
+}
+
+.week5-bar-row {
+    margin: 13px 0;
+}
+
+.week5-bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.week5-bar-track {
+    height: 8px;
+    border-radius: 99px;
+    background: rgba(127,127,127,.18);
+    overflow: hidden;
+}
+
+.week5-bar {
+    height: 100%;
+    border-radius: 99px;
+    background: currentColor;
+}
+
+.week5-sg {
+    margin-top: 18px;
+}
+
+.week5-sg-role {
+    margin: 12px 0 14px;
+    padding: 12px 14px;
+    border: 1px solid var(--border, #333);
+    border-radius: 12px;
+    background: rgba(127,127,127,.07);
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+.week5-source-status {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 12px;
+}
+
+.week5-source-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 9px;
+    border: 1px solid var(--border, #333);
+    border-radius: 999px;
+}
+
+.week5-score-note {
+    margin-top: 6px;
+    font-size: 12px;
+    opacity: .72;
+}
+
+.week5-model-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.week5-source {
+    padding: 11px;
+    border-bottom: 1px solid var(--border, #333);
+}
+
+.week5-source-path {
+    font-weight: 700;
+}
+
+.week5-source-meta {
+    font-size: 12px;
+    opacity: .7;
+    margin-top: 4px;
+}
+
+.week5-source-preview {
+    font-size: 12px;
+    margin-top: 5px;
+    white-space: pre-wrap;
+}
+
+@media (max-width: 900px) {
+    .week5-model-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .week5-question {
+        flex-direction: column;
+    }
+}
+</style>
+
 </head>
 
 <body>
 
 <div class="app">
 
-    <!-- =====================================================
+    <!-- =========================================================
          HEADER
-    ====================================================== -->
+    ========================================================== -->
 
     <header class="header">
 
-        <div class="brand">
+        <a
+            href="#overview"
+            class="brand"
+            aria-label="DevPulse Nexus home">
 
             <div class="brand-logo">
                 DP
@@ -793,7 +1480,43 @@
                 </div>
             </div>
 
-        </div>
+        </a>
+
+
+        <nav class="nav" aria-label="Dashboard navigation">
+
+            <a
+                href="#overview"
+                class="nav-link active">
+                Overview
+            </a>
+
+            <a
+                href="#digital-twin"
+                class="nav-link">
+                Digital Twin
+            </a>
+
+            <a
+                href="#diagnostics"
+                class="nav-link">
+                Diagnostics
+            </a>
+
+            <a
+                href="#ask-nexus"
+                class="nav-link">
+                Ask Nexus
+            </a>
+
+            <a
+                href="#ai-compare"
+                class="nav-link">
+                AI Compare
+            </a>
+
+        </nav>
+
 
         <div class="header-right">
 
@@ -810,11 +1533,41 @@
 
             </div>
 
+
             <button
-                class="refresh-btn"
+                id="themeToggle"
+                class="header-btn"
+                type="button"
+                onclick="toggleTheme()">
+
+                <span
+                    id="themeIcon"
+                    class="theme-icon">
+                    ☀
+                </span>
+
+                <span
+                    id="themeLabel"
+                    class="btn-text">
+                    Light
+                </span>
+
+            </button>
+
+
+            <button
+                id="refreshButton"
+                class="header-btn refresh-btn"
+                type="button"
                 onclick="refreshDashboard()">
 
-                Refresh
+                <span class="theme-icon">
+                    ↻
+                </span>
+
+                <span class="btn-text">
+                    Refresh
+                </span>
 
             </button>
 
@@ -823,30 +1576,44 @@
     </header>
 
 
-    <!-- =====================================================
+    <!-- =========================================================
          MAIN
-    ====================================================== -->
+    ========================================================== -->
 
-    <main class="main">
+    <main
+        id="overview"
+        class="main">
+
+
+        <!-- PAGE HEADING -->
 
         <div class="page-heading">
 
-            <h1>
-                Environment Overview
-            </h1>
+            <div>
 
-            <p id="lastUpdated">
-                Waiting for telemetry...
-            </p>
+                <h1>
+                    Environment Overview
+                </h1>
+
+                <p id="lastUpdated">
+                    Waiting for telemetry...
+                </p>
+
+            </div>
+
+            <div class="overview-label">
+                ● Live telemetry
+            </div>
 
         </div>
 
 
-        <!-- =================================================
+        <!-- =====================================================
              METRICS
-        ================================================== -->
+        ====================================================== -->
 
         <section class="metrics">
+
 
             <!-- CPU -->
 
@@ -867,24 +1634,20 @@
                 <div
                     id="cpuValue"
                     class="metric-value">
-
                     --
                 </div>
 
                 <div
                     id="cpuSecondary"
                     class="metric-secondary">
-
                     --
                 </div>
 
                 <div class="progress">
-
                     <div
                         id="cpuProgress"
                         class="progress-bar">
                     </div>
-
                 </div>
 
             </div>
@@ -909,24 +1672,20 @@
                 <div
                     id="memoryValue"
                     class="metric-value">
-
                     --
                 </div>
 
                 <div
                     id="memorySecondary"
                     class="metric-secondary">
-
                     --
                 </div>
 
                 <div class="progress">
-
                     <div
                         id="memoryProgress"
                         class="progress-bar">
                     </div>
-
                 </div>
 
             </div>
@@ -951,24 +1710,20 @@
                 <div
                     id="diskValue"
                     class="metric-value">
-
                     --
                 </div>
 
                 <div
                     id="diskSecondary"
                     class="metric-secondary">
-
                     --
                 </div>
 
                 <div class="progress">
-
                     <div
                         id="diskProgress"
                         class="progress-bar">
                     </div>
-
                 </div>
 
             </div>
@@ -993,26 +1748,20 @@
                 <div
                     id="dockerValue"
                     class="metric-value">
-
                     --
-
                 </div>
 
                 <div
                     id="dockerSecondary"
                     class="metric-secondary">
-
                     --
-
                 </div>
 
                 <div class="progress">
-
                     <div
                         id="dockerProgress"
                         class="progress-bar">
                     </div>
-
                 </div>
 
             </div>
@@ -1020,16 +1769,18 @@
         </section>
 
 
-        <!-- =================================================
-             SYSTEM + DIAGNOSIS
-        ================================================== -->
+        <!-- =====================================================
+             DIGITAL TWIN + DIAGNOSTICS
+        ====================================================== -->
 
         <section class="dashboard-grid">
 
 
-            <!-- SYSTEM -->
+            <!-- DIGITAL TWIN -->
 
-            <div class="panel">
+            <div
+                id="digital-twin"
+                class="panel">
 
                 <div class="panel-header">
 
@@ -1048,15 +1799,14 @@
                     <span
                         id="systemBadge"
                         class="badge">
-
                         LIVE
-
                     </span>
 
                 </div>
 
 
                 <div class="system-details">
+
 
                     <div class="detail">
 
@@ -1067,9 +1817,7 @@
                         <div
                             id="platform"
                             class="detail-value">
-
                             --
-
                         </div>
 
                     </div>
@@ -1084,9 +1832,7 @@
                         <div
                             id="kernel"
                             class="detail-value">
-
                             --
-
                         </div>
 
                     </div>
@@ -1101,9 +1847,7 @@
                         <div
                             id="cores"
                             class="detail-value">
-
                             --
-
                         </div>
 
                     </div>
@@ -1118,9 +1862,7 @@
                         <div
                             id="totalMemory"
                             class="detail-value">
-
                             --
-
                         </div>
 
                     </div>
@@ -1135,9 +1877,7 @@
                         <div
                             id="availableMemory"
                             class="detail-value">
-
                             --
-
                         </div>
 
                     </div>
@@ -1152,9 +1892,7 @@
                         <div
                             id="freeDisk"
                             class="detail-value">
-
                             --
-
                         </div>
 
                     </div>
@@ -1164,16 +1902,18 @@
             </div>
 
 
-            <!-- DIAGNOSIS -->
+            <!-- DIAGNOSTICS -->
 
-            <div class="panel">
+            <div
+                id="diagnostics"
+                class="panel">
 
                 <div class="panel-header">
 
                     <div>
 
                         <div class="panel-title">
-                            Deterministic Diagnosis
+                            System Diagnostics
                         </div>
 
                         <div class="panel-description">
@@ -1197,9 +1937,7 @@
                         <div
                             id="diagnosisTitle"
                             class="diagnosis-title">
-
                             Waiting for diagnosis...
-
                         </div>
 
                     </div>
@@ -1208,13 +1946,12 @@
                     <div
                         id="diagnosisReason"
                         class="diagnosis-reason">
-
                         Loading live diagnosis...
-
                     </div>
 
 
                     <div class="diagnosis-meta">
+
 
                         <div class="detail">
 
@@ -1225,9 +1962,7 @@
                             <div
                                 id="diagnosisDocker"
                                 class="detail-value">
-
                                 --
-
                             </div>
 
                         </div>
@@ -1242,12 +1977,11 @@
                             <div
                                 id="diagnosisContainers"
                                 class="detail-value">
-
                                 --
-
                             </div>
 
                         </div>
+
 
                     </div>
 
@@ -1258,9 +1992,9 @@
         </section>
 
 
-        <!-- =================================================
+        <!-- =====================================================
              DOCKER CONTAINERS
-        ================================================== -->
+        ====================================================== -->
 
         <section class="panel history-panel">
 
@@ -1281,9 +2015,7 @@
                 <span
                     id="dockerBadge"
                     class="badge">
-
                     --
-
                 </span>
 
             </div>
@@ -1308,9 +2040,9 @@
         </section>
 
 
-        <!-- =================================================
-             HISTORY
-        ================================================== -->
+        <!-- =====================================================
+             MEMORY HISTORY
+        ====================================================== -->
 
         <section class="panel history-panel">
 
@@ -1361,18 +2093,20 @@
         </section>
 
 
-        <!-- =================================================
-             AI ASSISTANT
-        ================================================== -->
+        <!-- =====================================================
+             ASK NEXUS
+        ====================================================== -->
 
-        <section class="panel ai-panel">
+        <section
+            id="ask-nexus"
+            class="panel ai-panel">
 
             <div class="panel-header">
 
                 <div>
 
                     <div class="panel-title">
-                        AI DevOps Assistant
+                        Ask Nexus
                     </div>
 
                     <div class="panel-description">
@@ -1384,9 +2118,7 @@
                 <span
                     id="aiBadge"
                     class="badge">
-
                     Qwen 1.5B
-
                 </span>
 
             </div>
@@ -1401,8 +2133,7 @@
                     class="question-input"
                     type="text"
                     autocomplete="off"
-                    placeholder="Ask: Is Docker responsible for my current memory usage?"
-                >
+                    placeholder="Ask: Is Docker responsible for my current memory usage?">
 
                 <button
                     id="askButton"
@@ -1423,7 +2154,6 @@
                 <div
                     id="aiAnswer"
                     class="ai-answer">
-
                 </div>
 
                 <div class="ai-meta">
@@ -1438,7 +2168,6 @@
 
                     <span id="aiStatus">
                         Status: --
-
                     </span>
 
                 </div>
@@ -1447,17 +2176,113 @@
 
         </section>
 
-    </main>
+    
+<!-- WEEK5_COMPARE -->
+<section
+    id="ai-compare"
+    class="panel week5-section">
 
+    <div class="section-heading">
+        <div>
+            <div class="eyebrow">
+                WEEK 5
+            </div>
+            <h2>
+                AI Model Comparison
+            </h2>
+            <p>
+                Repository-aware live evaluation using RAG + Sourcegraph
+                and the models currently available to the backend.
+            </p>
+        </div>
+    </div>
+
+    <div class="week5-question">
+        <textarea
+            id="week5Question"
+            placeholder="Ask any question about the DevPulse Nexus codebase or environment..."
+        ></textarea>
+
+        <button
+            type="button"
+            onclick="runWeek5Compare()">
+            Compare
+        </button>
+    </div>
+
+    <div
+        id="week5Status"
+        class="week5-status">
+    </div>
+
+    <div
+        id="week5Category"
+        class="week5-category">
+        Waiting for a question
+    </div>
+
+    <div
+        id="week5Result"
+        class="week5-result"
+        style="display:none;"
+        aria-live="polite">
+    </div>
+
+    <div
+        id="week5Models"
+        class="week5-model-grid">
+    </div>
+
+    <div class="week5-result">
+        <h3>Historical Week 4 — Seven Categories</h3>
+        <p>
+            Historical benchmark data remains separate from the
+            live repository-aware question.
+        </p>
+
+        <div
+            id="week5History"
+            class="week5-table-wrap">
+            Loading historical evaluation...
+        </div>
+    </div>
+
+    <div class="week5-result week5-sg">
+        <div class="panel-header">
+            <div>
+                <div class="panel-title">Sourcegraph Repository Intelligence</div>
+                <div class="panel-subtitle">
+                    Repository search and evidence retrieval — not a model and not a score.
+                </div>
+            </div>
+        </div>
+
+        <div class="week5-sg-role">
+            Sourcegraph searches the connected repository for files and matching lines.
+            Those matches are supplied to the local model as repository context and are
+            also used by the live evaluator to estimate grounding and detect unsupported
+            file references.
+        </div>
+
+        <div id="week5Sourcegraph">
+            No live query yet.
+        </div>
+    </div>
+
+</section>
+
+</main>
+
+
+    <!-- =========================================================
+         FOOTER
+    ========================================================== -->
 
     <footer class="footer">
-
         DevPulse Nexus · AI-Powered Developer Environment Observability
-
     </footer>
 
 </div>
-
 
 <script>
 
@@ -2313,6 +3138,606 @@
             REFRESH_INTERVAL
         );
 
+</script>
+
+
+
+
+
+<script id="theme-system-js">
+(function () {
+  const savedTheme = localStorage.getItem("devpulse-theme");
+
+  const systemTheme = window.matchMedia(
+    "(prefers-color-scheme: dark)"
+  ).matches ? "dark" : "light";
+
+  const initialTheme = savedTheme || systemTheme;
+
+  document.documentElement.dataset.theme = initialTheme;
+
+  window.toggleTheme = function () {
+    const current =
+      document.documentElement.dataset.theme || "light";
+
+    const next = current === "light" ? "dark" : "light";
+
+    document.documentElement.dataset.theme = next;
+
+    localStorage.setItem("devpulse-theme", next);
+
+    updateThemeButton(next);
+  };
+
+  function updateThemeButton(theme) {
+    const icon = document.querySelector(".theme-toggle-icon");
+    const label = document.querySelector(".theme-toggle-label");
+
+    if (!icon || !label) return;
+
+    if (theme === "dark") {
+      icon.textContent = "☀";
+      label.textContent = "Light";
+    } else {
+      icon.textContent = "☾";
+      label.textContent = "Dark";
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    updateThemeButton(
+      document.documentElement.dataset.theme
+    );
+  });
+})();
+</script>
+
+<script>
+(function () {
+    const savedTheme = localStorage.getItem("devpulse-theme");
+
+    if (savedTheme === "light" || savedTheme === "dark") {
+        document.documentElement.setAttribute("data-theme", savedTheme);
+    } else {
+        const prefersLight = window.matchMedia &&
+            window.matchMedia("(prefers-color-scheme: light)").matches;
+
+        document.documentElement.setAttribute(
+            "data-theme",
+            prefersLight ? "light" : "dark"
+        );
+    }
+
+    function updateThemeButton() {
+        const button = document.getElementById("themeToggle");
+        const icon = document.getElementById("themeIcon");
+        const label = document.getElementById("themeLabel");
+
+        if (!button) return;
+
+        const theme =
+            document.documentElement.getAttribute("data-theme") || "dark";
+
+        if (theme === "light") {
+            icon.textContent = "☾";
+            label.textContent = "Dark";
+            button.setAttribute("aria-label", "Switch to dark mode");
+            button.setAttribute("title", "Switch to dark mode");
+        } else {
+            icon.textContent = "☀";
+            label.textContent = "Light";
+            button.setAttribute("aria-label", "Switch to light mode");
+            button.setAttribute("title", "Switch to light mode");
+        }
+    }
+
+    window.toggleTheme = function () {
+        const current =
+            document.documentElement.getAttribute("data-theme") || "dark";
+
+        const next = current === "dark" ? "light" : "dark";
+
+        document.documentElement.setAttribute("data-theme", next);
+        localStorage.setItem("devpulse-theme", next);
+
+        updateThemeButton();
+    };
+
+    window.addEventListener("DOMContentLoaded", function () {
+        updateThemeButton();
+
+        document.querySelectorAll(".nav-link").forEach(function (link) {
+            link.addEventListener("click", function () {
+                document.querySelectorAll(".nav-link").forEach(function (item) {
+                    item.classList.remove("active");
+                });
+
+                this.classList.add("active");
+            });
+        });
+    });
+})();
+</script>
+
+
+<script id="week5-compare-js">
+(function () {
+
+    // Live models come from /compare; historical models remain
+    // separate and are rendered only by the historical section.
+    let models = [];
+
+    function esc(value) {
+        return String(value ?? "")
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+    }
+
+    function modelLabel(model) {
+        if (model === "qwen2.5:1.5b") {
+            return "Qwen 2.5 1.5B";
+        }
+
+        if (model === "phi3:mini") {
+            return "Phi-3 Mini";
+        }
+
+        if (model === "tinyllama") {
+            return "TinyLlama";
+        }
+
+        return model;
+    }
+
+    function metric(value, suffix = "%") {
+        if (value === null || value === undefined) {
+            return "N/A";
+        }
+
+        return Number(value).toFixed(1) + suffix;
+    }
+
+    window.runWeek5Compare = async function () {
+
+        const input =
+            document.getElementById("week5Question");
+
+        const status =
+            document.getElementById("week5Status");
+
+        const modelsBox =
+            document.getElementById("week5Models");
+
+        const resultBox =
+            document.getElementById("week5Result");
+
+        const categoryBox =
+            document.getElementById("week5Category");
+
+        const question =
+            input.value.trim();
+
+        if (!question) {
+            status.textContent =
+                "Enter a question first.";
+            return;
+        }
+
+        status.textContent =
+            "Analyzing: RAG → Sourcegraph → Qwen → Phi-3 → TinyLlama → evaluation...";
+
+        modelsBox.innerHTML = "";
+        resultBox.style.display = "none";
+
+        try {
+
+            const response = await fetch(
+                "/compare",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        question: question
+                    })
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok || data.error) {
+                throw new Error(
+                    data.error || "Comparison failed."
+                );
+            }
+
+            categoryBox.textContent =
+                "Query Type: " + data.category;
+
+            const comparison =
+                data.comparison || {};
+
+            const bestModel = comparison.best_model;
+            const bestScore =
+                bestModel && data.models && data.models[bestModel]
+                    ? data.models[bestModel].score
+                    : null;
+
+            resultBox.innerHTML = `
+                <strong>Live Evaluation Result</strong>
+                <div style="margin-top:6px">
+                    ${bestModel
+                        ? `Highest evaluated score:
+                           <strong>${esc(modelLabel(bestModel))}</strong>
+                           ${bestScore == null ? "" : ` · <strong>${metric(bestScore)}</strong>`}`
+                        : "No model completed successfully."}
+                </div>
+                <div style="margin-top:6px;opacity:.75">
+                    ${esc(comparison.reason || "")}
+                </div>
+                <div class="week5-score-note">
+                    The score is calculated from the live answer and current repository
+                    evidence. Historical Week 4 metrics below are not used in this score.
+                </div>
+            `;
+
+            resultBox.style.display = "block";
+
+            modelsBox.innerHTML =
+                models.map(function (model) {
+
+                    const item =
+                        (data.models || {})[model] || {};
+
+                    const score =
+                        item.score;
+
+                    const answer =
+                        item.answer || "";
+
+                    const error =
+                        item.error;
+
+                    return `
+                        <article class="week5-model-card">
+
+                            <div class="week5-model-name">
+                                ${esc(modelLabel(model))}
+                            </div>
+
+                            <div class="week5-score">
+                                ${score === null ||
+                                  score === undefined
+                                    ? "N/A"
+                                    : metric(score)}
+                            </div>
+
+                            <div class="week5-metrics">
+
+                                <div>
+                                    Correctness:
+                                    ${metric(item.correctness)}
+                                </div>
+
+                                <div>
+                                    Relevance:
+                                    ${metric(item.relevance)}
+                                </div>
+
+                                <div>
+                                    Coverage:
+                                    ${metric(item.coverage)}
+                                </div>
+
+                                <div>
+                                    Grounding:
+                                    ${metric(item.grounding)}
+                                </div>
+
+                                <div>
+                                    Hallucination:
+                                    ${metric(item.hallucination)}
+                                </div>
+
+                                <div>
+                                    Latency:
+                                    ${metric(
+                                        item.latency_seconds,
+                                        "s"
+                                    )}
+                                </div>
+
+                            </div>
+
+                            <div class="week5-answer">
+                                ${error
+                                    ? "ERROR: " + esc(error)
+                                    : esc(answer)}
+                            </div>
+
+                        </article>
+                    `;
+
+                }).join("");
+
+            renderSourcegraph(
+                data.sourcegraph || {}
+            );
+
+            renderHistory(
+                data.historical || {}
+            );
+
+            const liveModelCount = Object.keys(data.models || {}).length;
+            status.textContent =
+                "✓ RAG retrieved  ✓ Sourcegraph searched  ✓ " +
+                liveModelCount +
+                " live model" +
+                (liveModelCount === 1 ? "" : "s") +
+                " evaluated";
+
+        } catch (error) {
+
+            status.textContent =
+                "Comparison failed: " + error.message;
+
+            resultBox.style.display = "block";
+
+            resultBox.innerHTML =
+                "<strong>Error:</strong> " +
+                esc(error.message);
+        }
+    };
+
+
+    function renderSourcegraph(sourcegraph) {
+
+        const box =
+            document.getElementById(
+                "week5Sourcegraph"
+            );
+
+        const results =
+            sourcegraph.results || [];
+
+        if (!results.length) {
+            box.innerHTML = `
+                <div class="week5-source-status">
+                    <span class="week5-source-badge">No matches</span>
+                    <span>Sourcegraph was queried, but no repository lines matched this question.</span>
+                </div>
+            `;
+            return;
+        }
+
+        box.innerHTML = `
+            <div class="week5-source-status">
+                <span class="week5-source-badge">Repository evidence</span>
+                <span>${results.length} matching line${results.length === 1 ? "" : "s"}</span>
+            </div>
+
+            ${results.map(function (item) {
+
+                return `
+                    <div class="week5-source">
+
+                        <div class="week5-source-path">
+                            ${esc(item.path)}
+                            :
+                            ${esc(item.line)}
+                        </div>
+
+                        <div class="week5-source-meta">
+                            Repository:
+                            ${esc(item.repository)}
+                        </div>
+
+                        <div class="week5-source-preview">
+                            ${esc(item.preview)}
+                        </div>
+
+                    </div>
+                `;
+
+            }).join("")}
+        `;
+    }
+
+
+    function renderHistory(history) {
+
+        const box =
+            document.getElementById(
+                "week5History"
+            );
+
+        if (!history.available) {
+            box.textContent =
+                "Historical evaluation data unavailable.";
+            return;
+        }
+
+        const categories =
+            history.categories || {};
+
+        box.innerHTML = `
+            <table class="week5-table">
+
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Qwen</th>
+                        <th>Phi-3</th>
+                        <th>TinyLlama</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    ${Object.keys(categories).map(
+                        function (category) {
+
+                            const info =
+                                categories[category] || {};
+
+                            const modelData =
+                                info.models || {};
+
+                            function score(model) {
+
+                                const m =
+                                    modelData[model] || {};
+
+                                if (
+                                    m.correctness !== null &&
+                                    m.correctness !== undefined
+                                ) {
+                                    return m.correctness;
+                                }
+
+                                if (
+                                    m.relevance !== null &&
+                                    m.relevance !== undefined
+                                ) {
+                                    return m.relevance;
+                                }
+
+                                return null;
+                            }
+
+                            return `
+                                <tr>
+
+                                    <td>
+                                        <strong>
+                                            ${esc(category)}
+                                        </strong>
+                                    </td>
+
+                                    <td>
+                                        ${metric(
+                                            score(
+                                                "qwen2.5:1.5b"
+                                            )
+                                        )}
+                                    </td>
+
+                                    <td>
+                                        ${metric(
+                                            score(
+                                                "phi3:mini"
+                                            )
+                                        )}
+                                    </td>
+
+                                    <td>
+                                        ${metric(
+                                            score(
+                                                "tinyllama"
+                                            )
+                                        )}
+                                    </td>
+
+                                </tr>
+                            `;
+
+                        }
+                    ).join("")}
+
+                </tbody>
+
+            </table>
+
+            <div class="week5-bars">
+
+                ${Object.keys(categories).map(
+                    function (category) {
+
+                        const info =
+                            categories[category] || {};
+
+                        const modelsData =
+                            info.models || {};
+
+                        const vals = [
+                            modelsData["qwen2.5:1.5b"],
+                            modelsData["phi3:mini"],
+                            modelsData["tinyllama"]
+                        ].map(function (m) {
+
+                            if (!m) return 0;
+
+                            return Number(
+                                m.correctness ??
+                                m.relevance ??
+                                0
+                            );
+                        });
+
+                        const max =
+                            Math.max.apply(
+                                null,
+                                vals.concat([1])
+                            );
+
+                        return `
+                            <div class="week5-bar-row">
+
+                                <div class="week5-bar-label">
+                                    <span>
+                                        ${esc(category)}
+                                    </span>
+                                    <span>
+                                        Qwen
+                                        ${vals[0].toFixed(1)}
+                                        · Phi-3
+                                        ${vals[1].toFixed(1)}
+                                        · Tiny
+                                        ${vals[2].toFixed(1)}
+                                    </span>
+                                </div>
+
+                                <div
+                                    class="week5-bar-track"
+                                    title="${esc(category)}">
+
+                                    <div
+                                        class="week5-bar"
+                                        style="width:${
+                                            Math.min(
+                                                100,
+                                                vals[0] / max * 100
+                                            )
+                                        }%;">
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        `;
+
+                    }
+                ).join("")}
+
+            </div>
+        `;
+    }
+
+
+    window.addEventListener(
+        "DOMContentLoaded",
+        function () {
+            renderHistory({
+                available: false
+            });
+        }
+    );
+
+})();
 </script>
 
 </body>

@@ -1,0 +1,255 @@
+{
+  "total_evaluations": 90,
+  "model_loading": false,
+  "method": "deterministic rubric-based scoring",
+  "models": {
+    "qwen2.5:1.5b": {
+      "tests": 30,
+      "accuracy_percent": 20.0,
+      "partial_percent": 43.33,
+      "failure_percent": 36.67,
+      "average_concept_coverage_percent": 47.83,
+      "hallucination_screen_rate_percent": 6.67,
+      "performance": {
+        "average_latency_seconds": 68.17,
+        "median_latency_seconds": 12.26,
+        "p95_latency_seconds": 128.06,
+        "average_output_tokens": 99.9,
+        "total_output_tokens": 2997,
+        "average_tokens_per_second": 7.77,
+        "median_tokens_per_second": 7.43
+      }
+    },
+    "phi3:mini": {
+      "tests": 30,
+      "accuracy_percent": 10.0,
+      "partial_percent": 40.0,
+      "failure_percent": 50.0,
+      "average_concept_coverage_percent": 40.28,
+      "hallucination_screen_rate_percent": 3.33,
+      "performance": {
+        "average_latency_seconds": 27.08,
+        "median_latency_seconds": 13.65,
+        "p95_latency_seconds": 54.27,
+        "average_output_tokens": 62.93,
+        "total_output_tokens": 1888,
+        "average_tokens_per_second": 4.74,
+        "median_tokens_per_second": 5.45
+      }
+    },
+    "tinyllama": {
+      "tests": 30,
+      "accuracy_percent": 13.33,
+      "partial_percent": 36.67,
+      "failure_percent": 50.0,
+      "average_concept_coverage_percent": 38.17,
+      "hallucination_screen_rate_percent": 3.33,
+      "performance": {
+        "average_latency_seconds": 14.47,
+        "median_latency_seconds": 3.28,
+        "p95_latency_seconds": 54.17,
+        "average_output_tokens": 74.73,
+        "total_output_tokens": 2242,
+        "average_tokens_per_second": 16.74,
+        "median_tokens_per_second": 20.06
+      }
+    }
+  },
+  "categories": {
+    "Explanation": {
+      "qwen2.5:1.5b": {
+        "tests": 4,
+        "correct_percent": 25.0,
+        "partial_percent": 25.0,
+        "failed_percent": 50.0,
+        "average_concept_coverage_percent": 40.0,
+        "hallucination_rate_percent": 25.0
+      },
+      "phi3:mini": {
+        "tests": 4,
+        "correct_percent": 25.0,
+        "partial_percent": 50.0,
+        "failed_percent": 25.0,
+        "average_concept_coverage_percent": 46.25,
+        "hallucination_rate_percent": 0.0
+      },
+      "tinyllama": {
+        "tests": 4,
+        "correct_percent": 25.0,
+        "partial_percent": 25.0,
+        "failed_percent": 50.0,
+        "average_concept_coverage_percent": 40.0,
+        "hallucination_rate_percent": 0.0
+      },
+      "WINNER": "phi3:mini"
+    },
+    "Code Retrieval": {
+      "qwen2.5:1.5b": {
+        "tests": 4,
+        "correct_percent": 25.0,
+        "partial_percent": 75.0,
+        "failed_percent": 0.0,
+        "average_concept_coverage_percent": 75.0,
+        "hallucination_rate_percent": 0.0
+      },
+      "phi3:mini": {
+        "tests": 4,
+        "correct_percent": 0.0,
+        "partial_percent": 75.0,
+        "failed_percent": 25.0,
+        "average_concept_coverage_percent": 58.34,
+        "hallucination_rate_percent": 0.0
+      },
+      "tinyllama": {
+        "tests": 4,
+        "correct_percent": 0.0,
+        "partial_percent": 75.0,
+        "failed_percent": 25.0,
+        "average_concept_coverage_percent": 50.0,
+        "hallucination_rate_percent": 0.0
+      },
+      "WINNER": "qwen2.5:1.5b"
+    },
+    "Dependency Understanding": {
+      "phi3:mini": {
+        "tests": 4,
+        "correct_percent": 25.0,
+        "partial_percent": 25.0,
+        "failed_percent": 50.0,
+        "average_concept_coverage_percent": 39.58,
+        "hallucination_rate_percent": 0.0
+      },
+      "qwen2.5:1.5b": {
+        "tests": 4,
+        "correct_percent": 25.0,
+        "partial_percent": 50.0,
+        "failed_percent": 25.0,
+        "average_concept_coverage_percent": 50.0,
+        "hallucination_rate_percent": 0.0
+      },
+      "tinyllama": {
+        "tests": 4,
+        "correct_percent": 25.0,
+        "partial_percent": 25.0,
+        "failed_percent": 50.0,
+        "average_concept_coverage_percent": 39.58,
+        "hallucination_rate_percent": 0.0
+      },
+      "WINNER": "qwen2.5:1.5b"
+    },
+    "Bug Analysis": {
+      "qwen2.5:1.5b": {
+        "tests": 4,
+        "correct_percent": 0.0,
+        "partial_percent": 25.0,
+        "failed_percent": 75.0,
+        "average_concept_coverage_percent": 23.75,
+        "hallucination_rate_percent": 0.0
+      },
+      "tinyllama": {
+        "tests": 4,
+        "correct_percent": 0.0,
+        "partial_percent": 0.0,
+        "failed_percent": 100.0,
+        "average_concept_coverage_percent": 17.5,
+        "hallucination_rate_percent": 0.0
+      },
+      "phi3:mini": {
+        "tests": 4,
+        "correct_percent": 0.0,
+        "partial_percent": 0.0,
+        "failed_percent": 100.0,
+        "average_concept_coverage_percent": 17.5,
+        "hallucination_rate_percent": 0.0
+      },
+      "WINNER": "qwen2.5:1.5b"
+    },
+    "Code Generation": {
+      "qwen2.5:1.5b": {
+        "tests": 5,
+        "correct_percent": 20.0,
+        "partial_percent": 60.0,
+        "failed_percent": 20.0,
+        "average_concept_coverage_percent": 57.0,
+        "hallucination_rate_percent": 0.0,
+        "code_test_pass_rate_percent": 20.0
+      },
+      "tinyllama": {
+        "tests": 5,
+        "correct_percent": 20.0,
+        "partial_percent": 60.0,
+        "failed_percent": 20.0,
+        "average_concept_coverage_percent": 53.0,
+        "hallucination_rate_percent": 0.0,
+        "code_test_pass_rate_percent": 20.0
+      },
+      "phi3:mini": {
+        "tests": 5,
+        "correct_percent": 0.0,
+        "partial_percent": 40.0,
+        "failed_percent": 60.0,
+        "average_concept_coverage_percent": 32.0,
+        "hallucination_rate_percent": 0.0,
+        "code_test_pass_rate_percent": 0.0
+      },
+      "WINNER": "qwen2.5:1.5b"
+    },
+    "Refactoring": {
+      "qwen2.5:1.5b": {
+        "tests": 4,
+        "correct_percent": 0.0,
+        "partial_percent": 75.0,
+        "failed_percent": 25.0,
+        "average_concept_coverage_percent": 32.5,
+        "hallucination_rate_percent": 0.0
+      },
+      "tinyllama": {
+        "tests": 4,
+        "correct_percent": 0.0,
+        "partial_percent": 50.0,
+        "failed_percent": 50.0,
+        "average_concept_coverage_percent": 27.5,
+        "hallucination_rate_percent": 0.0
+      },
+      "phi3:mini": {
+        "tests": 4,
+        "correct_percent": 0.0,
+        "partial_percent": 75.0,
+        "failed_percent": 25.0,
+        "average_concept_coverage_percent": 41.67,
+        "hallucination_rate_percent": 0.0
+      },
+      "WINNER": "phi3:mini"
+    },
+    "RAG-based Question": {
+      "qwen2.5:1.5b": {
+        "tests": 5,
+        "correct_percent": 40.0,
+        "partial_percent": 0.0,
+        "failed_percent": 60.0,
+        "average_concept_coverage_percent": 53.0,
+        "hallucination_rate_percent": 20.0,
+        "retrieval_grounding_score_percent": 40.0
+      },
+      "tinyllama": {
+        "tests": 5,
+        "correct_percent": 20.0,
+        "partial_percent": 20.0,
+        "failed_percent": 60.0,
+        "average_concept_coverage_percent": 36.33,
+        "hallucination_rate_percent": 20.0,
+        "retrieval_grounding_score_percent": 20.0
+      },
+      "phi3:mini": {
+        "tests": 5,
+        "correct_percent": 20.0,
+        "partial_percent": 20.0,
+        "failed_percent": 60.0,
+        "average_concept_coverage_percent": 47.0,
+        "hallucination_rate_percent": 20.0,
+        "retrieval_grounding_score_percent": 20.0
+      },
+      "WINNER": "qwen2.5:1.5b"
+    }
+  }
+}
